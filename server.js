@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const fetch = require("node-fetch");
 const cors = require("cors"); // Import cors middleware
-require("dotenv").config();
+// require("dotenv").config();
 
 const app = express();
 const PORT = 8000;
@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 // Proxy route to send data to Slack
 app.post("/api/send-to-slack", async (req, res) => {
+  // process.env.WEBHOOK_URL used to access the url from .env
   const slackWebhookUrl = process.env.WEBHOOK_LINK;
   const message = req.body;
 

@@ -1,7 +1,8 @@
 import React from "react";
-require('dotenv').config();
+// require('dotenv').config();
 
 const SlackButton = () => {
+  // process.env.WEBHOOK_URL used to access the url from .env
   const webhookUrl = process.env.WEBHOOK_URL;
 
   const sendToSlack = async () => {

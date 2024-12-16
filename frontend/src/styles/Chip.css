@@ -1,0 +1,49 @@
+.chip_base {
+    background-color: white;
+    width: 300px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.chip_top {
+    /* background-color: blue; */
+    display: flex;
+    height: 80%;
+}
+
+.chip_bottom {
+    background-color: green;
+    height: 20%;
+    border-radius: 0px 00px 20px 20px;
+    color: white;
+}
+
+.chip_bottom p{
+    align-items: center;
+}
+
+.chip_text {
+    /* background-color: yellow; */
+    display: flex;
+    flex-direction: column;
+}
+
+.chip_title {
+    text-align: left;
+}
+
+.chip_sub {
+    text-align: left;
+}
+
+.chip_percentage{
+    display: table;
+}
+
+.chip_number {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
