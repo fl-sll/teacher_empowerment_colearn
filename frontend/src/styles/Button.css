@@ -1,0 +1,43 @@
+.custom_button {
+    color: black;
+    border: 2px solid black;
+    height: 40px;
+    width: auto;
+    border-radius: 10px;
+    margin-left: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.custom{
+    background-color: white;
+    border: 0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.slack{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    border: 0;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.logo {
+    height: 20px;
+    margin-right: 5px;
+}
+
+.logo_slack{
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.custom_button:hover{
+    background-color: rgb(212, 212, 212);
+}

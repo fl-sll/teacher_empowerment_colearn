@@ -1,0 +1,21 @@
+.sidebar{
+    width: 100%;
+    background-color: #151F4B;
+    height: auto;
+    color: white;
+}
+
+.image-container {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full width of the container */
+    overflow: hidden; /* Hide any overflow content */
+  }
+  
+  .cropped-image {
+    position: absolute;
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Keep the image width */
+    height: auto; /* Maintain aspect ratio */
+  }

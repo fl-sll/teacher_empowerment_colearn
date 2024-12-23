@@ -1,4 +1,6 @@
 import React from "react";
+import "../styles/Button.css";
+import logo from "../assets/slack_logo.png"
 // require('dotenv').config();
 
 const SlackButton = () => {
@@ -26,7 +28,8 @@ const SlackButton = () => {
   };
 
   return (
-    <button onClick={sendToSlack} style={{ padding: "10px 20px", fontSize: "16px" }}>
+    <button className="custom_button slack" onClick={sendToSlack} style={{ padding: "10px 20px", fontSize: "16px" }}>
+      {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
       Send to Slack
     </button>
   );

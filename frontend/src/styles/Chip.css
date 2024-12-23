@@ -4,46 +4,72 @@
     height: 150px;
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
+    border-radius: 15px;
+    /* margin: 10px; */
+}
+
+.increase {
+    background-color: var(--lightgreen);
+}
+
+.decrease {
+    background-color: var(--red);
 }
 
 .chip_top {
     /* background-color: blue; */
     display: flex;
     height: 80%;
+    width: 100%;
 }
 
 .chip_bottom {
-    background-color: green;
+    /* background-color: var(--lightgreen); */
     height: 20%;
-    border-radius: 0px 00px 20px 20px;
+    border-radius: 0px 0px 15px 15px;
     color: white;
+    display: flex;
+    align-items: center;
 }
 
-.chip_bottom p{
+.chip_bottom p {
     align-items: center;
+    margin: 0;
+    margin-left: 8%;
+    font-size: 14px;
 }
 
 .chip_text {
     /* background-color: yellow; */
     display: flex;
     flex-direction: column;
+    margin: 5% 0 5% 5%;
+    width: 55%;
 }
 
 .chip_title {
     text-align: left;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
 }
 
 .chip_sub {
     text-align: left;
+    font-size: 14px;
 }
 
-.chip_percentage{
+.chip_percentage {
     display: table;
+    width: 35%;
+    margin-right: 5%;
 }
 
 .chip_number {
     text-align: center;
     vertical-align: middle;
     display: table-cell;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--green);
 }

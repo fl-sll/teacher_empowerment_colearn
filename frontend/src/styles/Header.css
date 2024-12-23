@@ -1,0 +1,14 @@
+.header-image-container {
+    position: relative; /* Ensures it stays in the flow of the document */
+    height: 100%; /* Fixed height for the header */
+    width: 100%; /* Full width */
+    overflow: hidden; /* Crop any excess content */
+  }
+  
+  .header-image {
+    /* position: absolute; */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Maintain the height of the container */
+    /* width: auto; Keep aspect ratio */
+  }
