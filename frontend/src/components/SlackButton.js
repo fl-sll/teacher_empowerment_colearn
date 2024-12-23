@@ -1,22 +1,23 @@
-import React from "react";
-import "../styles/Button.css";
-import logo from "../assets/slack_logo.png"
-// require('dotenv').config();
+import React, { useState } from 'react';
+import logo from '../assets/slack_logo.png';
 
-const SlackButton = () => {
-  // process.env.WEBHOOK_URL used to access the url from .env
-  const webhookUrl = process.env.WEBHOOK_URL;
+function SlackButton({ selectedRows, onSendData }){
+  const webhookUrl = process.env.REACT_APP_WEBHOOK_LINK; 
+
+  const handleSendData = () => {
+    onSendData(selectedRows);
+  };
 
   const sendToSlack = async () => {
     const message = { text: "Remember to greet new students!" };
-  
+
     try {
-      const response = await fetch("http://localhost:8000/api/send-to-slack", {
+      const response = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message),
       });
-  
+
       if (response.ok) {
         console.log("Message sent to Slack successfully!");
       } else {
@@ -28,9 +29,10 @@ const SlackButton = () => {
   };
 
   return (
-    <button className="custom_button slack" onClick={sendToSlack} style={{ padding: "10px 20px", fontSize: "16px" }}>
+    <button className="custom_button slack" onClick={handleSendData} style={{ padding: "10px 20px", fontSize: "16px" }}>
       {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
       Send Notification
+      {webhookUrl}
     </button>
   );
 };

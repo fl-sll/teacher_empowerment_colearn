@@ -73,3 +73,24 @@
     font-weight: 800;
     color: var(--green);
 }
+
+.label_chip {
+    border-radius: 50px;
+    color: white;
+    padding: 2px 5px;
+}
+
+.high {
+    background-color: rgba(63, 143, 116, 0.3);
+    color: #3F8F74;
+}
+
+.medium {
+    background-color: rgba(230, 100, 32, 0.3);
+    color: #E66420;
+}
+
+.low {
+    background-color: rgba(163, 13, 17, 0.3);
+    color: #A30D11;
+}

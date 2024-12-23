@@ -21,6 +21,16 @@ function Main() {
   const showStudentsTable = () => setActiveTable("students");
   const showSessionsTable = () => setActiveTable("sessions");
 
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleSelectedRowsChange = (newSelectedRows) => {
+    setSelectedRows(newSelectedRows);
+  };
+
+  const handleSendData = (selectedRows) => {
+    alert(`Sending data: ${JSON.stringify(selectedRows)}`);
+  };
+
   return (
     <div className="Main">
       <div className="sidebar">
@@ -47,7 +57,7 @@ function Main() {
           />
           <div className="customize">
             <Button label={"Customize"} logo={slider} border={"customize"} />
-            <SlackButton />
+            <SlackButton  selectedRows={selectedRows} onSendData={handleSendData} />
           </div>
         </div>
         <div className="button_details">
@@ -55,8 +65,8 @@ function Main() {
           <Button label={"Sessions"} action={showSessionsTable} />
         </div>
         <div className="table_view">
-          {activeTable === "students" && <Table type="students" />}
-          {activeTable === "sessions" && <Table type="sessions" />}
+          {activeTable === "students" && <Table type="students" onSelectedRowsChange={handleSelectedRowsChange}/>}
+          {activeTable === "sessions" && <Table type="sessions" onSelectedRowsChange={handleSelectedRowsChange}/>}
         </div>
       </div>
     </div>
