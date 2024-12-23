@@ -10,9 +10,9 @@
 
 .custom_table th,
 .custom_table td {
-    padding: 8px 15px;
+    padding: 10px 10px;
     text-align: center;
-    /* border: 1px solid #ddd; */
+
 }
 
 .custom_table th {
@@ -31,6 +31,7 @@
     width: 100%;
     border: 0;
     border-radius: 4px;
+    margin-top: 5px;
 }
 
 .custom_table input[type="checkbox"] {
@@ -56,22 +57,8 @@
     background-color: #dc3545;
 }
 
-.button_cell {
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    color: #007bff;
-    text-decoration: underline;
-}
-
-.send_button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.send_button:hover {
-    background-color: #0056b3;
 }

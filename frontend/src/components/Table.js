@@ -33,7 +33,7 @@ const Table = ({ type, onSelectedRowsChange }) => {
   // Sample data for students and sessions
   const sampleStudentData = [
     {
-      name: "John Doe",
+      name: "John Doe Very Long Name",
       stickiness: "high",
       percentageStickiness: "85%",
       attendanceRate: "90%",
@@ -148,7 +148,7 @@ const Table = ({ type, onSelectedRowsChange }) => {
                     </svg>
                     ) : header === "Name" ? (
                         <>
-                        <p>Name</p>
+                        Name
                         <input
                             type="text"
                             placeholder="Search"
@@ -183,7 +183,7 @@ const Table = ({ type, onSelectedRowsChange }) => {
                 <td>
                   <a
                     // ! Change this to course/slot/student ID (?)
-                    href={`/profile/${row.name
+                    href={`/details/${row.name
                       .replace(/\s+/g, "-")
                       .toLowerCase()}`}
                     style={{ textDecoration: "underline", color: "inherit" }}
