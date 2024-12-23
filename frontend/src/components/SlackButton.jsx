@@ -30,7 +30,7 @@ const SlackButton = () => {
   return (
     <button className="custom_button slack" onClick={sendToSlack} style={{ padding: "10px 20px", fontSize: "16px" }}>
       {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
-      Send to Slack
+      Send Notification
     </button>
   );
 };

@@ -1,13 +1,15 @@
 import React from "react";
 import "../styles/SideBar.css";
-import sidebar from "../assets/sidebar.png"
+import colearn from "../assets/colearn_logo.png";
 
 function SideBar() {
   return (
-    <div className="image-container">
-        {/* <button>Engagement</button> */}
-        {/* <button>test</button> */}
-        <img src={sidebar} alt="sidebar" className="cropped-image" />
+    <div className="sidebar-container">
+      {/* <button>Engagement</button> */}
+      {/* <button>test</button> */}
+      {/* <img src={sidebar} alt="sidebar" className="cropped-image" /> */}
+      <img src={colearn} alt="colearn logo" className="colearn_logo"/>
+      Engagement Dashboard
     </div>
   );
 }

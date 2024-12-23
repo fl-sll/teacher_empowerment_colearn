@@ -1,0 +1,78 @@
+.custom_table {
+    width: 98%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+
+.custom_table th,
+.custom_table td {
+    padding: 12px 15px;
+    text-align: center;
+    /* border: 1px solid #ddd; */
+}
+
+.custom_table th {
+    color: white;
+}
+
+.custom_table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.custom_table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.custom_table input[type="text"] {
+    width: 90%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.custom_table input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.chip {
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.chip.green {
+    background-color: #28a745;
+}
+
+.chip.orange {
+    background-color: #ffc107;
+}
+
+.chip.red {
+    background-color: #dc3545;
+}
+
+.button_cell {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.send_button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.send_button:hover {
+    background-color: #0056b3;
+}

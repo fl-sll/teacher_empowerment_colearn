@@ -1,14 +1,44 @@
-.header-image-container {
-    position: relative; /* Ensures it stays in the flow of the document */
-    height: 100%; /* Fixed height for the header */
-    width: 100%; /* Full width */
-    overflow: hidden; /* Crop any excess content */
-  }
-  
-  .header-image {
-    /* position: absolute; */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 100%; /* Maintain the height of the container */
-    /* width: auto; Keep aspect ratio */
-  }
+.header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.header-container h2 {
+  margin-top: 2%;
+}
+
+label {
+  font-weight: 500;
+  font-size: small;
+}
+
+.course-slot-selector {
+  display: flex;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 5px;
+}
+
+select {
+  background-color: #1A48D0;
+  color: white;
+  height: 40px;
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 5px;
+}
+
+hr {
+  border: 0;
+  height: 1px; 
+  background-color: #c3c3c3;
+  width: 100%;
+  margin: 20px 0;
+}

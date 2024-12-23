@@ -21,14 +21,14 @@
 }
 
 .App .main {
-  width: 85%;
-  margin-left: 15%;
+  width: 100%;
+  margin-left: 18%;
 }
 
 .chips {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   margin-bottom: 15px;
 }
 
@@ -37,15 +37,11 @@
   flex-direction: column;
 }
 
-.test {
-  background-color: blue;
-  height: 1000px;
-}
-
 .button_details {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  /* margin-left: 25px; */
 }
 
 .customize {
