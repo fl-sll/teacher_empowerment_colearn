@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
-import logo from '../assets/slack_logo.png';
+import React from "react";
+import logo from "../assets/slack_logo.png";
 
-function SlackButton({ selectedRows, onSendData }){
-  const webhookUrl = process.env.REACT_APP_WEBHOOK_LINK; 
+function SlackButton({ selectedRows, onSendData, selectedCourse, selectedSlot }) {
+  const webhookUrl = process.env.REACT_APP_BACKEND;
 
-  const handleSendData = () => {
-    onSendData(selectedRows);
+  const handleSendData = async () => {
+    await sendToSlack(selectedRows);
   };
 
-  const sendToSlack = async () => {
-    const message = { text: "Remember to greet new students!" };
+  const sendToSlack = async (selectedRows) => {
+    let messageText;
+    if (selectedRows.length === 0) {
+      messageText = "You didn't select any names, please select and click the button again. Thank you.";
+    } else {
+      messageText = "*Here are the list of names that you need to call today:*\n" + 
+                    selectedRows.map((name) => `- ${name}`).join("\n");
+    }
+
+    // Add course and slot info to the message
+    messageText += `\n\n*Course:* ${selectedCourse || "None"}\n*Slot:* ${selectedSlot || "None"}`;
+
+    const message = { text: messageText };
 
     try {
       const response = await fetch(webhookUrl, {
@@ -32,9 +43,8 @@ function SlackButton({ selectedRows, onSendData }){
     <button className="custom_button slack" onClick={handleSendData} style={{ padding: "10px 20px", fontSize: "16px" }}>
       {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
       Send Notification
-      {webhookUrl}
     </button>
   );
-};
+}
 
 export default SlackButton;

@@ -2,14 +2,15 @@
   --lightgreen: #50C09A;
   --green: #419176;
   --red: #DA484B;
+  background-color: #F5F5F5;
 }
 
 .App {
   text-align: center;
   display: flex;
-  width: 100vw;
-  height: auto;
-  background-color: #F5F5F5;
+  /* width: 100vw; */
+  /* height: auto; */
+  /* background-color: #F5F5F5; */
 
 }
 

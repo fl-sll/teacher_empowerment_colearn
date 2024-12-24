@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Header.css";
 
-function Header() {
+function Header({ onCourseChange, onSlotChange }) {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
 
@@ -10,11 +10,14 @@ function Header() {
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
+    onCourseChange(e.target.value); // Call the parent's callback
   };
 
   const handleSlotChange = (e) => {
     setSelectedSlot(e.target.value);
+    onSlotChange(e.target.value); // Call the parent's callback
   };
+
   return (
     <div className="header-container">
       <h2>Engagement Dashboard</h2>
@@ -53,15 +56,9 @@ function Header() {
             ))}
           </select>
         </div>
-
-        {/* <div className="selection-summary">
-            <p>
-              Selected Course: {selectedCourse || "None"} <br />
-              Selected Slot: {selectedSlot || "None"}
-            </p>
-          </div> */}
       </div>
-      <hr></hr>
+
+      <hr />
     </div>
   );
 }
