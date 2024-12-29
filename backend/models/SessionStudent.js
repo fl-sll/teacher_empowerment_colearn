@@ -34,6 +34,18 @@ const SessionStudent = sequelize.define('SessionStudent', {
     correctness: {
         type: DataTypes.FLOAT,
         allowNull: true
+    },
+    pretest: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    posttest: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    improvement: {
+        type: DataTypes.FLOAT,
+        allowNull: true
     }
 });
 

@@ -4,11 +4,12 @@ const sequelize = require('../config/db.config');
 const Student = sequelize.define('Student', {
     studentId: {
         type: DataTypes.STRING,
-        primaryKey: true
+        primaryKey: true,
+        allowNull: false
     },
     studentName: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     stickiness: {
         type: DataTypes.FLOAT,
@@ -18,19 +19,7 @@ const Student = sequelize.define('Student', {
         type: DataTypes.FLOAT,
         allowNull: true
     },
-    pretest: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
-    posttest: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
     correctness: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    },
-    improvement: {
         type: DataTypes.FLOAT,
         allowNull: true
     }
