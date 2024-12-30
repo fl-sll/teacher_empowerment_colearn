@@ -4,12 +4,24 @@ const app = express();
 const sequelize = require("./config/db.config.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpecs = require("./config/swagger.config.js");
+const cors = require("cors");
+
+const port = process.env.BE_PORT;
+// console.log(port);
 
 app.use(express.json());
+app.use(cors());
 
 // Swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
-
+app.use(
+  cors({
+    // ! CHANGE TO FRONTEND LINK
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 require("./routes/course.routes.js")(app);
 require("./routes/class.routes.js")(app);
 require("./routes/session.routes.js")(app);
@@ -21,8 +33,8 @@ sequelize
   .then(() => {
     console.log("Connection has been established successfully.");
     sequelize.sync().then(() => {
-      app.listen(5000, () => {
-        console.log("Server is running on port 5000");
+      app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
       });
     });
   })

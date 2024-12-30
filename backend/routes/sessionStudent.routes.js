@@ -1,132 +1,156 @@
-module.exports = app => {
+module.exports = (app) => {
     const express = require('express');
     const router = express.Router();
-    const studentController = require('../controllers/student.controller.js');
+    const sessionStudentController = require('../controllers/sessionStudent.controller.js'); // Updated controller path
 
     /**
      * @swagger
      * tags:
-     *   name: Students
-     *   description: Student management
+     *   name: SessionStudents
+     *   description: Session student management
      */
 
     /**
      * @swagger
-     * /students:
+     * /session-students:
      *   get:
-     *     summary: Retrieve a list of students
-     *     tags: [Students]
+     *     summary: Retrieve a list of session students
+     *     tags: [SessionStudents]
      *     responses:
      *       200:
-     *         description: A list of students
+     *         description: A list of session students
      *         content:
      *           application/json:
      *             schema:
      *               type: array
      *               items:
-     *                 $ref: '#/components/schemas/Student'
+     *                 $ref: '#/components/schemas/SessionStudent'
      */
+    router.get('/session-students/', sessionStudentController.getAllSessionStudents);
 
     /**
      * @swagger
-     * /students/{studentId}:
+     * /session-students/{sessionId}:
      *   get:
-     *     summary: Retrieve a single student
-     *     tags: [Students]
+     *     summary: Retrieve a list of student in session
+     *     tags: [SessionStudents]
      *     parameters:
      *       - in: path
-     *         name: studentId
+     *         name: sessionId
      *         required: true
      *         schema:
      *           type: string
-     *         description: The student ID
+     *         description: The session ID
      *     responses:
      *       200:
-     *         description: A single student
+     *         description: A list of students in the sesssion
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/Student'
+     *               $ref: '#/components/schemas/SessionStudent'
      *       404:
-     *         description: Student not found
+     *         description: Session not found
      */
+    router.get('/session-students/:sessionId', sessionStudentController.getStudentsInSession);
 
     /**
      * @swagger
-     * /students:
+     * /session-students/{id}:
+     *   get:
+     *     summary: Retrieve a single session student
+     *     tags: [SessionStudents]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The session student ID
+     *     responses:
+     *       200:
+     *         description: A single session student
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/SessionStudent'
+     *       404:
+     *         description: Session student not found
+     */
+    router.get('/session-students/:id', sessionStudentController.getSessionStudentById);
+
+    /**
+     * @swagger
+     * /session-students:
      *   post:
-     *     summary: Create a new student
-     *     tags: [Students]
+     *     summary: Create a new session student
+     *     tags: [SessionStudents]
      *     requestBody:
      *       required: true
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/Student'
+     *             $ref: '#/components/schemas/SessionStudent'
      *     responses:
      *       201:
-     *         description: The created student
+     *         description: The created session student
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/Student'
+     *               $ref: '#/components/schemas/SessionStudent'
      */
+    router.post('/session-students/', sessionStudentController.createSessionStudent);
 
     /**
      * @swagger
-     * /students/{studentId}:
+     * /session-students/{id}:
      *   put:
-     *     summary: Update a student
-     *     tags: [Students]
+     *     summary: Update a session student
+     *     tags: [SessionStudents]
      *     parameters:
      *       - in: path
-     *         name: studentId
+     *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The student ID
+     *         description: The session student ID
      *     requestBody:
      *       required: true
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/Student'
+     *             $ref: '#/components/schemas/SessionStudent'
      *     responses:
      *       200:
-     *         description: The updated student
+     *         description: The updated session student
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/Student'
+     *               $ref: '#/components/schemas/SessionStudent'
      *       404:
-     *         description: Student not found
+     *         description: Session student not found
      */
+    router.put('/session-students/:id', sessionStudentController.updateSessionStudent);
 
     /**
      * @swagger
-     * /students/{studentId}:
+     * /session-students/{id}:
      *   delete:
-     *     summary: Delete a student
-     *     tags: [Students]
+     *     summary: Delete a session student
+     *     tags: [SessionStudents]
      *     parameters:
      *       - in: path
-     *         name: studentId
+     *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The student ID
+     *         description: The session student ID
      *     responses:
      *       204:
-     *         description: Student deleted
+     *         description: Session student deleted
      *       404:
-     *         description: Student not found
+     *         description: Session student not found
      */
-
-    router.get('/students/', studentController.getAllStudents);
-    router.get('/students/:studentId', studentController.getStudentById);
-    router.post('/students/', studentController.createStudent);
-    router.put('/students/:studentId', studentController.updateStudent);
-    router.delete('/students/:studentId', studentController.deleteStudent);
+    router.delete('/session-students/:id', sessionStudentController.deleteSessionStudent);
 
     app.use('/api', router);
 };
