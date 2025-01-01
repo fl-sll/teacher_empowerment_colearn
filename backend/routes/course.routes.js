@@ -117,6 +117,43 @@
  *         description: Course not found
  */
 
+/**
+ * @swagger
+ * /courses/{courseId}/metrics:
+ *   put:
+ *     summary: Update a course metrics
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The course ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *              stickiness:
+ *                  type: number
+ *              correctness:
+ *                  type: number
+ *              attendance:
+ *                  type: number 
+ *     responses:
+ *       200:
+ *         description: The updated course
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Course'
+ *       404:
+ *         description: Course not found
+ */
+
 module.exports = app => {
     const express = require('express');
     const router = express.Router();
@@ -127,6 +164,7 @@ module.exports = app => {
     router.post('/courses/', courseController.createCourse);
     router.put('/courses/:courseId', courseController.updateCourse);
     router.delete('/courses/:courseId', courseController.deleteCourse);
+    router.delete('/courses/:courseId/metrics', courseController.updateMetrics);
 
     app.use('/api', router);
 };

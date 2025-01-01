@@ -152,5 +152,56 @@ module.exports = (app) => {
      */
     router.delete('/session-students/:id', sessionStudentController.deleteSessionStudent);
 
+    /**
+     * @swagger
+     * /sessions/{sessionId}/students/{studentId}/metrics:
+     *   put:
+     *     summary: Update metrics for a session-student record
+     *     tags: [SessionStudents]
+     *     parameters:
+     *       - in: path
+     *         name: sessionId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The session ID
+     *       - in: path
+     *         name: studentId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The student ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               stickiness:
+     *                 type: number
+     *               correctness:
+     *                 type: number
+     *               attendance:
+     *                 type: number
+     *               pretest:
+     *                 type: number
+     *               posttest:
+     *                 type: number
+     *               improvement:
+     *                 type: number
+     *     responses:
+     *       200:
+     *         description: The updated session-student record
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/SessionStudent'
+     *       404:
+     *         description: Session-Student record not found
+     */
+
+    router.put('/session-students/:id/metrics', sessionStudentController.updateMetrics);
+
     app.use('/api', router);
 };

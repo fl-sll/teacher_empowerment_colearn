@@ -179,6 +179,44 @@
      *         description: Session not found
      */
 
+    /**
+     * @swagger
+     * /sessions/{sessionId}/metrics:
+     *   put:
+     *     summary: Update metrics for a session
+     *     tags: [Sessions]
+     *     parameters:
+     *       - in: path
+     *         name: sessionId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The session ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               stickiness:
+     *                 type: number
+     *               correctness:
+     *                 type: number
+     *               attendance:
+     *                 type: number
+     *     responses:
+     *       200:
+     *         description: The updated session
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Session'
+     *       404:
+     *         description: Session not found
+     */
+
+
 module.exports = app => {
     const express = require('express');
     const router = express.Router();
@@ -189,6 +227,7 @@ module.exports = app => {
     router.post('/courses/:courseId/classes/:classId/sessions/', sessionController.createSession);
     router.put('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.updateSession);
     router.delete('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.deleteSession);
+    router.put('/courses/:courseId/classes/:classId/sessions/:sessionId/metrics', sessionController.updateMetrics);
 
     app.use('/api', router);
 };

@@ -57,3 +57,27 @@ exports.deleteSessionStudent = async (req, res) => {
     res.status(404).send("SessionStudent not found");
   }
 };
+
+exports.updateMetrics = async (req, res) => {
+  const { sessionId, studentId } = req.params;
+  const { stickiness, correctness, attendance, pretest, posttest, improvement } = req.body;
+
+  try {
+      const sessionStudent = await SessionStudent.findOne({ where: { sessionId, studentId } });
+      if (!sessionStudent) {
+          return res.status(404).json({ message: 'SessionStudent not found' });
+      }
+
+      sessionStudent.stickiness = stickiness;
+      sessionStudent.correctness = correctness;
+      sessionStudent.attendance = attendance;
+      sessionStudent.pretest = pretest;
+      sessionStudent.posttest = posttest;
+      sessionStudent.improvement = improvement;
+
+      await sessionStudent.save();
+      res.status(200).json(sessionStudent);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};

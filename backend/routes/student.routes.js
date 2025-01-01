@@ -122,11 +122,50 @@ module.exports = app => {
      *         description: Student not found
      */
 
+    /**
+     * @swagger
+     * /students/{studentId}/metrics:
+     *   put:
+     *     summary: Update metrics for a student
+     *     tags: [Students]
+     *     parameters:
+     *       - in: path
+     *         name: studentId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The student ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               stickiness:
+     *                 type: number
+     *               correctness:
+     *                 type: number
+     *               attendance:
+     *                 type: number
+     *     responses:
+     *       200:
+     *         description: The updated student
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Student'
+     *       404:
+     *         description: Student not found
+     */
+
+
     router.get('/students/', studentController.getAllStudents);
     router.get('/students/:studentId', studentController.getStudentById);
     router.post('/students/', studentController.createStudent);
     router.put('/students/:studentId', studentController.updateStudent);
     router.delete('/students/:studentId', studentController.deleteStudent);
+    router.put('/students/:studentId/metrics', studentController.updateMetrics);
 
     app.use('/api', router);
 };

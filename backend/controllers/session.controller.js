@@ -87,3 +87,24 @@ exports.deleteSession = async (req, res) => {
     res.status(404).send("Session not found");
   }
 };
+
+exports.updateMetrics = async (req, res) => {
+  const { sessionId } = req.params;
+  const { stickiness, correctness, attendance } = req.body;
+
+  try {
+      const session = await Session.findByPk(sessionId);
+      if (!session) {
+          return res.status(404).json({ message: 'Session not found' });
+      }
+
+      session.stickiness = stickiness;
+      session.correctness = correctness;
+      session.attendance = attendance;
+
+      await session.save();
+      res.status(200).json(session);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};

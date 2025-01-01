@@ -53,3 +53,24 @@ exports.deleteCourse = async (req, res) => {
         res.status(404).send('Course not found');
     }
 };
+
+exports.updateMetrics = async (req, res) => {
+    const { courseId } = req.params;
+    const { stickiness, correctness, attendance } = req.body;
+  
+    try {
+        const course = await Course.findByPk(courseId);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+  
+        course.stickiness = stickiness;
+        course.correctness = correctness;
+        course.attendance = attendance;
+  
+        await course.save();
+        res.status(200).json(course);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+  };

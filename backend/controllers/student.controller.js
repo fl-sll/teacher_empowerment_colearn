@@ -44,3 +44,24 @@ exports.deleteStudent = async (req, res) => {
     res.status(404).send("Student not found");
   }
 };
+
+exports.updateMetrics = async (req, res) => {
+  const { studentId } = req.params;
+  const { stickiness, correctness, attendance } = req.body;
+
+  try {
+      const student = await Student.findByPk(studentId);
+      if (!student) {
+          return res.status(404).json({ message: 'Student not found' });
+      }
+
+      student.stickiness = stickiness;
+      student.correctness = correctness;
+      student.attendance = attendance;
+
+      await student.save();
+      res.status(200).json(student);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};

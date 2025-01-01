@@ -105,3 +105,24 @@ exports.deleteClass = async (req, res) => {
     res.status(404).send("Class not found");
   }
 };
+
+exports.updateMetrics = async (req, res) => {
+  const { classId } = req.params;
+  const { stickiness, correctness, attendance } = req.body;
+
+  try {
+      const classInstance = await Class.findByPk(classId);
+      if (!classInstance) {
+          return res.status(404).json({ message: 'Class not found' });
+      }
+
+      classInstance.stickiness = stickiness;
+      classInstance.correctness = correctness;
+      classInstance.attendance = attendance;
+
+      await classInstance.save();
+      res.status(200).json(classInstance);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
