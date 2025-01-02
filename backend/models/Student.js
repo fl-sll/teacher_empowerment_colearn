@@ -21,4 +21,7 @@ const Student = sequelize.define('Student', {
     }
 });
 
+Student.hasOne(Metrics, { foreignKey: 'studentId' });
+Metrics.belongsTo(Student, { foreignKey: 'studentId' });
+
 module.exports = Student;

@@ -30,17 +30,9 @@ const options = {
               type: "string",
               description: "The name of the course",
             },
-            stickiness: {
+            metricId: {
               type: "number",
-              description: "The stickiness metric of the course",
-            },
-            correctness: {
-              type: "number",
-              description: "The correctness metric of the course",
-            },
-            attendance: {
-              type: "number",
-              description: "The attendance metric of the course",
+              description: "The ID of the metric",
             },
           },
         },
@@ -60,17 +52,9 @@ const options = {
               type: "string",
               description: "The name of the class",
             },
-            stickiness: {
+            metricId: {
               type: "number",
-              description: "The stickiness metric of the class",
-            },
-            correctness: {
-              type: "number",
-              description: "The correctness metric of the class",
-            },
-            attendance: {
-              type: "number",
-              description: "The attendance metric of the class",
+              description: "The ID of the metric",
             },
           },
         },
@@ -91,17 +75,9 @@ const options = {
               format: "date",
               description: "The date of the session",
             },
-            stickiness: {
+            metricId: {
               type: "number",
-              description: "The stickiness metric of the session",
-            },
-            correctness: {
-              type: "number",
-              description: "The correctness metric of the session",
-            },
-            attendance: {
-              type: "number",
-              description: "The attendance metric of the session",
+              description: "The ID of the metric",
             },
           },
         },
@@ -117,13 +93,9 @@ const options = {
               type: "string",
               description: "The name of the student",
             },
-            stickiness: {
+            metricId: {
               type: "number",
-              description: "The stickiness metric of the student",
-            },
-            attendance: {
-              type: "number",
-              description: "The attendance metric of the student",
+              description: "The ID of the metric",
             },
             pretest: {
               type: "integer",
@@ -132,14 +104,6 @@ const options = {
             posttest: {
               type: "integer",
               description: "The posttest score of the student",
-            },
-            correctness: {
-              type: "number",
-              description: "The correctness metric of the student",
-            },
-            improvement: {
-              type: "number",
-              description: "The improvement metric of the student",
             },
           },
         },
@@ -155,23 +119,34 @@ const options = {
               type: "string",
               description: "The ID of the student",
             },
+            metricId: {
+              type: "number",
+              description: "The ID of the metric",
+            }
+          },
+        },
+        Metrics: {
+          type: "object",
+          required: ["stickiness", "correctness", "attendance", "improvement"],
+          properties: {
             stickiness: {
               type: "number",
-              description:
-                "The stickiness metric of the student in the session",
-            },
-            attendance: {
-              type: "number",
-              description:
-                "The attendance metric of the student in the session",
+              description: "The stickiness metric",
             },
             correctness: {
               type: "number",
-              description:
-                "The correctness metric of the student in the session",
+              description: "The correctness metric",
+            },
+            attendance: {
+              type: "number",
+              description: "The attendance metric",
+            },
+            improvement: {
+              type: "string",
+              description: "The improvement metric",
             },
           },
-        },
+        }
       },
     },
   },

@@ -41,4 +41,7 @@ const SessionStudent = sequelize.define('SessionStudent', {
     },
 });
 
+SessionStudent.hasOne(Metrics, { foreignKey: 'id' });
+Metrics.belongsTo(SessionStudent, { foreignKey: 'id' });
+
 module.exports = SessionStudent;

@@ -28,4 +28,7 @@ const Class = sequelize.define("Class", {
   },
 });
 
+Class.hasOne(Metrics, { foreignKey: 'classId' });
+Metrics.belongsTo(Class, { foreignKey: 'classId' });
+
 module.exports = Class;

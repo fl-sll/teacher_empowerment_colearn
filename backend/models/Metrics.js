@@ -4,7 +4,8 @@ const sequelize = require('../config/db.config');
 const Metrics = sequelize.define('Metrics', {
     metricsId: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     stickiness: {
         type: DataTypes.FLOAT,

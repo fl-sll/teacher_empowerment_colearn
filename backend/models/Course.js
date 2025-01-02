@@ -20,4 +20,7 @@ const Course = sequelize.define("Course", {
   },
 });
 
+Course.hasOne(Metrics, { foreignKey: 'courseId' });
+Metrics.belongsTo(Course, { foreignKey: 'courseId' });
+
 module.exports = Course;

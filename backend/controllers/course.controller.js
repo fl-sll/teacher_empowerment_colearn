@@ -1,5 +1,6 @@
-const Course = require('../models/Course');
 const { Sequelize } = require("sequelize");
+const Course = require('../models/Course');
+const Metrics = require('../models/Metrics');
 
 
 exports.getAllCourses = async (req, res) => {

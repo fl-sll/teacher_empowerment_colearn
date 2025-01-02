@@ -28,4 +28,7 @@ const Session = sequelize.define('Session', {
     }
 });
 
+Session.hasOne(Metrics, { foreignKey: 'sessionId' });
+Metrics.belongsTo(Session, { foreignKey: 'sessionId' });
+
 module.exports = Session;
