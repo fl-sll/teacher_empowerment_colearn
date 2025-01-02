@@ -22,6 +22,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+require("./routes/metrics.routes.js")(app);
 require("./routes/course.routes.js")(app);
 require("./routes/class.routes.js")(app);
 require("./routes/session.routes.js")(app);

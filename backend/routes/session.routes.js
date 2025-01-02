@@ -1,4 +1,9 @@
-/**
+module.exports = app => {
+    const express = require('express');
+    const router = express.Router();
+    const sessionController = require('../controllers/session.controller.js');
+
+    /**
      * @swagger
      * tags:
      *   name: Sessions
@@ -9,7 +14,7 @@
      * @swagger
      * /courses/{courseId}/classes/{classId}/sessions:
      *   get:
-     *     summary: Retrieve a list of sessions for a class
+     *     summary: Get all sessions for a class
      *     tags: [Sessions]
      *     parameters:
      *       - in: path
@@ -26,20 +31,22 @@
      *         description: The class ID
      *     responses:
      *       200:
-     *         description: A list of sessions
+     *         description: The list of sessions
      *         content:
      *           application/json:
      *             schema:
      *               type: array
      *               items:
      *                 $ref: '#/components/schemas/Session'
+     *       500:
+     *         description: Internal server error
      */
 
     /**
      * @swagger
      * /courses/{courseId}/classes/{classId}/sessions/{sessionId}:
      *   get:
-     *     summary: Retrieve a single session
+     *     summary: Get session by ID
      *     tags: [Sessions]
      *     parameters:
      *       - in: path
@@ -62,13 +69,15 @@
      *         description: The session ID
      *     responses:
      *       200:
-     *         description: A single session
+     *         description: The session data
      *         content:
      *           application/json:
      *             schema:
      *               $ref: '#/components/schemas/Session'
      *       404:
      *         description: Session not found
+     *       500:
+     *         description: Internal server error
      */
 
     /**
@@ -77,19 +86,6 @@
      *   post:
      *     summary: Create a new session
      *     tags: [Sessions]
-     *     parameters:
-     *       - in: path
-     *         name: courseId
-     *         required: true
-     *         schema:
-     *           type: string
-     *         description: The course ID
-     *       - in: path
-     *         name: classId
-     *         required: true
-     *         schema:
-     *           type: string
-     *         description: The class ID
      *     requestBody:
      *       required: true
      *       content:
@@ -103,13 +99,15 @@
      *           application/json:
      *             schema:
      *               $ref: '#/components/schemas/Session'
+     *       500:
+     *         description: Internal server error
      */
 
     /**
      * @swagger
      * /courses/{courseId}/classes/{classId}/sessions/{sessionId}:
      *   put:
-     *     summary: Update a session
+     *     summary: Update session by ID
      *     tags: [Sessions]
      *     parameters:
      *       - in: path
@@ -145,13 +143,15 @@
      *               $ref: '#/components/schemas/Session'
      *       404:
      *         description: Session not found
+     *       500:
+     *         description: Internal server error
      */
 
     /**
      * @swagger
      * /courses/{courseId}/classes/{classId}/sessions/{sessionId}:
      *   delete:
-     *     summary: Delete a session
+     *     summary: Delete session by ID
      *     tags: [Sessions]
      *     parameters:
      *       - in: path
@@ -177,15 +177,29 @@
      *         description: Session deleted
      *       404:
      *         description: Session not found
+     *       500:
+     *         description: Internal server error
      */
 
     /**
      * @swagger
-     * /sessions/{sessionId}/metrics:
+     * /courses/{courseId}/classes/{classId}/sessions/{sessionId}/metrics:
      *   put:
      *     summary: Update metrics for a session
      *     tags: [Sessions]
      *     parameters:
+     *       - in: path
+     *         name: courseId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The course ID
+     *       - in: path
+     *         name: classId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The class ID
      *       - in: path
      *         name: sessionId
      *         required: true
@@ -214,17 +228,13 @@
      *               $ref: '#/components/schemas/Session'
      *       404:
      *         description: Session not found
+     *       500:
+     *         description: Internal server error
      */
-
-
-module.exports = app => {
-    const express = require('express');
-    const router = express.Router();
-    const sessionController = require('../controllers/session.controller.js');
 
     router.get('/courses/:courseId/classes/:classId/sessions', sessionController.getAllSessions);
     router.get('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.getSessionById);
-    router.post('/courses/:courseId/classes/:classId/sessions/', sessionController.createSession);
+    router.post('/courses/:courseId/classes/:classId/sessions', sessionController.createSession);
     router.put('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.updateSession);
     router.delete('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.deleteSession);
     router.put('/courses/:courseId/classes/:classId/sessions/:sessionId/metrics', sessionController.updateMetrics);

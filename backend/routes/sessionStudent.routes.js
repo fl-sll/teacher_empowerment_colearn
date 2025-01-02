@@ -189,7 +189,7 @@ module.exports = (app) => {
      *               posttest:
      *                 type: number
      *               improvement:
-     *                 type: number
+     *                 type: string
      *     responses:
      *       200:
      *         description: The updated session-student record

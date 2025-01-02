@@ -1,4 +1,5 @@
 const SessionStudent = require("../models/SessionStudent");
+const Metrics = require("../models/Metrics");
 
 exports.getAllSessionStudents = async (req, res) => {
   const sessionStudents = await SessionStudent.findAll();
@@ -63,21 +64,39 @@ exports.updateMetrics = async (req, res) => {
   const { stickiness, correctness, attendance, pretest, posttest, improvement } = req.body;
 
   try {
-      const sessionStudent = await SessionStudent.findOne({ where: { sessionId, studentId } });
-      if (!sessionStudent) {
-          return res.status(404).json({ message: 'SessionStudent not found' });
-      }
+    const sessionStudent = await SessionStudent.findOne({
+      where: { sessionId, studentId },
+      include: Metrics,
+    });
+    if (!sessionStudent) {
+      return res.status(404).json({ message: 'SessionStudent not found' });
+    }
 
-      sessionStudent.stickiness = stickiness;
-      sessionStudent.correctness = correctness;
-      sessionStudent.attendance = attendance;
-      sessionStudent.pretest = pretest;
-      sessionStudent.posttest = posttest;
-      sessionStudent.improvement = improvement;
-
+    if (sessionStudent.Metrics) {
+      sessionStudent.Metrics.stickiness = stickiness;
+      sessionStudent.Metrics.correctness = correctness;
+      sessionStudent.Metrics.attendance = attendance;
+      sessionStudent.Metrics.pretest = pretest;
+      sessionStudent.Metrics.posttest = posttest;
+      sessionStudent.Metrics.improvement = improvement;
+      await sessionStudent.Metrics.save();
+    } else {
+      const metrics = await Metrics.create({
+        sessionId,
+        studentId,
+        stickiness,
+        correctness,
+        attendance,
+        pretest,
+        posttest,
+        improvement
+      });
+      sessionStudent.metricsId = metrics.metricsId;
       await sessionStudent.save();
-      res.status(200).json(sessionStudent);
+    }
+
+    res.status(200).json(sessionStudent);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 const Class = require('./Class');
+const Metrics = require("./Metrics");
 
 const Session = sequelize.define('Session', {
     sessionId: {
@@ -18,17 +19,12 @@ const Session = sequelize.define('Session', {
         type: DataTypes.DATE,
         allowNull: true
     },
-    stickiness: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    },
-    correctness: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    },
-    attendance: {
-        type: DataTypes.FLOAT,
-        allowNull: true
+    metricsId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: Metrics,
+          key: "metricsId",
+        }
     }
 });
 

@@ -148,6 +148,8 @@ module.exports = app => {
      *                 type: number
      *               attendance:
      *                 type: number
+     *               improvement:
+     *                 type: string
      *     responses:
      *       200:
      *         description: The updated student
@@ -157,6 +159,8 @@ module.exports = app => {
      *               $ref: '#/components/schemas/Student'
      *       404:
      *         description: Student not found
+     *       500:
+     *         description: Internal server error
      */
 
 

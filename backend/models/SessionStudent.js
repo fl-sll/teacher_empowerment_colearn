@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 const Session = require('./Session');
 const Student = require('./Student');
+const Metrics = require("./Metrics");
 
 const SessionStudent = sequelize.define('SessionStudent', {
     id: {
@@ -23,17 +24,12 @@ const SessionStudent = sequelize.define('SessionStudent', {
             key: 'studentId'
         }
     },
-    stickiness: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    },
-    attendance: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    },
-    correctness: {
-        type: DataTypes.FLOAT,
-        allowNull: true
+    metricsId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: Metrics,
+          key: "metricsId",
+        }
     },
     pretest: {
         type: DataTypes.INTEGER,
@@ -43,10 +39,6 @@ const SessionStudent = sequelize.define('SessionStudent', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    improvement: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-    }
 });
 
 module.exports = SessionStudent;

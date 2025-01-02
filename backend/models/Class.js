@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db.config");
 const Course = require("./Course");
+const Metrics = require("./Metrics");
 
 const Class = sequelize.define("Class", {
   classId: {
@@ -18,17 +19,12 @@ const Class = sequelize.define("Class", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  stickiness: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
-  },
-  correctness: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
-  },
-  attendance: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
+  metricsId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Metrics,
+      key: "metricsId",
+    }
   },
 });
 
