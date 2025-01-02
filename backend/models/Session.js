@@ -24,7 +24,8 @@ const Session = sequelize.define('Session', {
         references: {
           model: Metrics,
           key: "metricsId",
-        }
+        },
+        allowNull: false
     }
 });
 

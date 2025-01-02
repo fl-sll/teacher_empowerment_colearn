@@ -17,7 +17,8 @@ const Student = sequelize.define('Student', {
         references: {
           model: Metrics,
           key: "metricsId",
-        }
+        },
+        allowNull: false
     }
 });
 

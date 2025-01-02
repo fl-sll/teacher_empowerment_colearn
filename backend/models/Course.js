@@ -16,7 +16,8 @@ const Course = sequelize.define("Course", {
     references: {
       model: Metrics,
       key: "metricsId",
-    }
+    },
+    allowNull: false
   },
 });
 

@@ -24,7 +24,8 @@ const Class = sequelize.define("Class", {
     references: {
       model: Metrics,
       key: "metricsId",
-    }
+    },
+    allowNull: false
   },
 });
 

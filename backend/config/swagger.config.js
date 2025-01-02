@@ -30,9 +30,9 @@ const options = {
               type: "string",
               description: "The name of the course",
             },
-            metricId: {
+            metricsId: {
               type: "number",
-              description: "The ID of the metric",
+              description: "The ID of the metrics",
             },
           },
         },
@@ -52,9 +52,9 @@ const options = {
               type: "string",
               description: "The name of the class",
             },
-            metricId: {
+            metricsId: {
               type: "number",
-              description: "The ID of the metric",
+              description: "The ID of the metrics",
             },
           },
         },
@@ -75,9 +75,9 @@ const options = {
               format: "date",
               description: "The date of the session",
             },
-            metricId: {
+            metricsId: {
               type: "number",
-              description: "The ID of the metric",
+              description: "The ID of the metrics",
             },
           },
         },
@@ -93,18 +93,10 @@ const options = {
               type: "string",
               description: "The name of the student",
             },
-            metricId: {
+            metricsId: {
               type: "number",
-              description: "The ID of the metric",
-            },
-            pretest: {
-              type: "integer",
-              description: "The pretest score of the student",
-            },
-            posttest: {
-              type: "integer",
-              description: "The posttest score of the student",
-            },
+              description: "The ID of the metrics",
+            }
           },
         },
         SessionStudent: {
@@ -119,34 +111,67 @@ const options = {
               type: "string",
               description: "The ID of the student",
             },
-            metricId: {
+            metricsId: {
               type: "number",
-              description: "The ID of the metric",
-            }
+              description: "The ID of the metrics",
+            },
+            pretest: {
+              type: "integer",
+              description: "The pretest score of the student",
+            },
+            posttest: {
+              type: "integer",
+              description: "The posttest score of the student",
+            },
           },
         },
         Metrics: {
           type: "object",
-          required: ["stickiness", "correctness", "attendance", "improvement"],
+          required: [
+            "metricsId",
+            "stickiness",
+            "avgTimeSpent",
+            "attendanceOver30Mins",
+            "attendance",
+            "correctness",
+            "improvement",
+          ],
           properties: {
+            metricsId: {
+              type: "integer",
+              description: "The unique identifier for the metrics (primary key)",
+            },
             stickiness: {
               type: "number",
-              description: "The stickiness metric",
+              format: "float",
+              description: "The stickiness metrics",
+            },
+            avgTimeSpent: {
+              type: "number",
+              format: "float",
+              description: "The average time spent on activities",
+            },
+            attendanceOver30Mins: {
+              type: "number",
+              format: "float",
+              description:
+                "Percentage of sessions attended for over 30 minutes",
+            },
+            attendance: {
+              type: "integer",
+              description: "The attendance count",
             },
             correctness: {
               type: "number",
-              description: "The correctness metric",
-            },
-            attendance: {
-              type: "number",
-              description: "The attendance metric",
+              format: "float",
+              description: "The correctness metrics",
             },
             improvement: {
               type: "string",
-              description: "The improvement metric",
+              description: "The improvement metrics as a qualitative descriptor",
             },
           },
-        }
+        },
       },
     },
   },

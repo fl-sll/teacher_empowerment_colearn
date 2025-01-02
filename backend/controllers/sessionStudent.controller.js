@@ -16,17 +16,31 @@ exports.getSessionStudentById = async (req, res) => {
 };
 
 exports.getStudentsInSession = async (req, res) => {
-    const sessionStudent = await SessionStudent.findAll({
-        where:{
-            sessionId: req.params.sessionId
-        }
-    });
-    if (sessionStudent) {
-      res.json(sessionStudent);
-    } else {
-      res.status(404).send("SessionStudent not found");
-    }
-  };
+  const sessionStudent = await SessionStudent.findAll({
+    where: {
+      sessionId: req.params.sessionId,
+    },
+  });
+  if (sessionStudent) {
+    res.json(sessionStudent);
+  } else {
+    res.status(404).send("Session not found");
+  }
+};
+
+exports.getStudentsByStudentId = async (req, res) => {
+  console.log("student id ", req.params.studentId);
+  const sessionStudent = await SessionStudent.findAll({
+    where: {
+      studentId: req.params.studentId,
+    },
+  });
+  if (sessionStudent) {
+    res.json(sessionStudent);
+  } else {
+    res.status(404).send("Student not found");
+  }
+};
 
 exports.createSessionStudent = async (req, res) => {
   try {
@@ -35,7 +49,8 @@ exports.createSessionStudent = async (req, res) => {
   } catch (err) {
     console.error("Error fetching sessions:", err);
     res.status(500).send({
-      message: err.message || "Some error occurred while retrieving sessions.",})
+      message: err.message || "Some error occurred while retrieving sessions.",
+    });
   }
 };
 
@@ -61,7 +76,14 @@ exports.deleteSessionStudent = async (req, res) => {
 
 exports.updateMetrics = async (req, res) => {
   const { sessionId, studentId } = req.params;
-  const { stickiness, correctness, attendance, pretest, posttest, improvement } = req.body;
+  const {
+    stickiness,
+    correctness,
+    attendance,
+    pretest,
+    posttest,
+    improvement,
+  } = req.body;
 
   try {
     const sessionStudent = await SessionStudent.findOne({
@@ -69,7 +91,7 @@ exports.updateMetrics = async (req, res) => {
       include: Metrics,
     });
     if (!sessionStudent) {
-      return res.status(404).json({ message: 'SessionStudent not found' });
+      return res.status(404).json({ message: "SessionStudent not found" });
     }
 
     if (sessionStudent.Metrics) {
@@ -89,7 +111,7 @@ exports.updateMetrics = async (req, res) => {
         attendance,
         pretest,
         posttest,
-        improvement
+        improvement,
       });
       sessionStudent.metricsId = metrics.metricsId;
       await sessionStudent.save();

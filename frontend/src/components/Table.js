@@ -3,7 +3,7 @@ import "../styles/Table.css";
 import Label from "./Label";
 import { Link } from "react-router-dom";
 
-const Table = ({ type, data, onSelectedRowsChange }) => {
+const Table = ({ type, data, onSelectedRowsChange, onRowClick }) => {
   // Define headers for the table based on type
   const studentHeaders = [
     "Select",
@@ -44,26 +44,32 @@ const Table = ({ type, data, onSelectedRowsChange }) => {
       : [...selectedRows, index];
 
     setSelectedRows(newSelectedRows);
-    onSelectedRowsChange(newSelectedRows);
+    onSelectedRowsChange && onSelectedRowsChange(newSelectedRows);
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Check if `onSelectedRowsChange` or `onRowClick` is provided
+  const isSelectable = onSelectedRowsChange || onRowClick;
+
+  // Conditionally filter out "Select" header if not needed
+  const filteredHeaders = isSelectable ? headers : headers.filter(header => header !== "Select");
+
   return (
     <div className="table_div">
       <table className="custom_table">
         <thead>
           <tr>
-            {headers.map((header, index) => (
+            {filteredHeaders.map((header, index) => (
               <th
                 key={index}
                 style={{
                   backgroundColor: index % 2 === 0 ? "#4983F9" : "#1A48D0",
                 }}
               >
-                {header === "Select" ? (
+                {header === "Select" && isSelectable ? (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="select">
                     <path
                       fill="#ffffff"
@@ -95,18 +101,28 @@ const Table = ({ type, data, onSelectedRowsChange }) => {
                 : true
             )
             .map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr
+                key={rowIndex}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+              >
+                {isSelectable && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedRows.includes(row.name)}
+                      onChange={() => handleCheckboxChange(row.name)}
+                    />
+                  </td>
+                )}
                 <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.includes(row.name)}
-                    onChange={() => handleCheckboxChange(row.name)}
-                  />
-                </td>
-                <td>
-                <Link to={`/details/${row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  {row.name}
-                </Link>
+                  {/* Conditionally render Link for the Name column */}
+                  {onSelectedRowsChange || onRowClick ? (
+                    <Link to={`/student/${row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {row.name}
+                    </Link>
+                  ) : (
+                    row.name // If no onSelectedRowsChange or onRowClick, render just the name
+                  )}
                 </td>
                 <td>
                   <Label text={row.stickiness.toUpperCase()} />

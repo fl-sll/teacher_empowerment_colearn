@@ -91,6 +91,72 @@ module.exports = app => {
      *         description: Internal server error
      */
 
+
+    /**
+     * @swagger
+     * /metrics/calculate/student/{studentId}:
+     *   put:
+     *     summary: Update metrics by studentID
+     *     tags: [Metrics]
+     *     parameters:
+     *       - in: path
+     *         name: studentId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The Student ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Metrics'
+     *     responses:
+     *       200:
+     *         description: The updated metrics
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Metrics'
+     *       404:
+     *         description: Metrics not found
+     *       500:
+     *         description: Internal server error
+     */
+
+    /**
+     * @swagger
+     * /metrics/calculate/session/{sessionId}:
+     *   put:
+     *     summary: Update metrics by sessionID
+     *     tags: [Metrics]
+     *     parameters:
+     *       - in: path
+     *         name: sessionId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The Session ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Metrics'
+     *     responses:
+     *       200:
+     *         description: The updated metrics
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Metrics'
+     *       404:
+     *         description: Metrics not found
+     *       500:
+     *         description: Internal server error
+     */
+
+
     /**
      * @swagger
      * /metrics/{metricsId}:
@@ -116,6 +182,8 @@ module.exports = app => {
     router.post('/metrics', metricsController.createMetrics);
     router.get('/metrics/:metricsId', metricsController.getMetricsById);
     router.put('/metrics/:metricsId', metricsController.updateMetrics);
+    router.put('/metrics/calculate/student/:studentId', metricsController.calculateStudent);
+    router.put('/metrics/calculate/session/:sessionId', metricsController.calculateSession);
     router.delete('/metrics/:metricsId', metricsController.deleteMetrics);
 
     app.use('/api', router);

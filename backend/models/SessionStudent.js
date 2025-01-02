@@ -29,7 +29,8 @@ const SessionStudent = sequelize.define('SessionStudent', {
         references: {
           model: Metrics,
           key: "metricsId",
-        }
+        },
+        allowNull: false
     },
     pretest: {
         type: DataTypes.INTEGER,

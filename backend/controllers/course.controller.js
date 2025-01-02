@@ -6,7 +6,7 @@ const Metrics = require('../models/Metrics');
 exports.getAllCourses = async (req, res) => {
     try {
       const courses = await Course.findAll({
-        include: Metrics,
+        // include: Metrics,
       });
       res.send(courses);
     } catch (err) {

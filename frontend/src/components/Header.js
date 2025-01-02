@@ -1,12 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
+import axios from "axios";
+import { backend_link } from "./CONST";
 
 function Header({ onCourseChange, onSlotChange }) {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
+  const [courseOptions, setCourseOptions] = useState([]);
+  const [slotOptions, setSlotOptions] = useState([]);
 
-  const courseOptions = ["Matematika Merdeka - Kelas 4 SMT 2"];
-  const slotOptions = ["Matematika Merdeka 5", "Matematika Merdeka 6"];
+  // const courseOptions = ["Matematika Merdeka - Kelas 4 SMT 2"];
+  // const slotOptions = ["Matematika Merdeka 5", "Matematika Merdeka 6"];
+
+  const fetchCoursesData = async () => {
+    try {
+      const course_data = await axios.get(`${backend_link}courses/`);
+      // console.log(`${backend_link}courses/`)
+      // console.log(course_data.data);
+      const data = course_data.data.map((item) => ({
+        courseName: item.courseName,
+        courseId: item.courseId
+      }));
+      console.log(data);
+      setCourseOptions(data);
+      // setCourses(course_data.data);
+    } catch (err) {
+      console.log("error: ", err);
+      setCourseOptions(["Error"])
+    }
+  };
+
+  const fetchSlotData = async () => {
+    try {
+      // console.log(selectedCourse);
+      const slot_data = await axios.get(`${backend_link}courses/${selectedCourse}/classes/`);
+      const data = slot_data.data.map((item) => ({
+        slotName: item.className,
+        slotId: item.classId
+      }));
+      console.log(data);
+      setSlotOptions(data);
+      // setCourses(course_data.data);
+    } catch (err) {
+      console.log("error: ", err);
+      setSlotOptions(["Error"])
+    }
+  };
+
+  useEffect(()=>{
+    fetchCoursesData();
+    fetchSlotData();
+  })
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
@@ -33,8 +77,9 @@ function Header({ onCourseChange, onSlotChange }) {
           >
             <option value="">Select a course</option>
             {courseOptions.map((course, index) => (
-              <option key={index} value={course}>
-                {course}
+              <option key={index} value={course.courseId}>
+                {course.courseName}
+
               </option>
             ))}
           </select>
@@ -50,8 +95,8 @@ function Header({ onCourseChange, onSlotChange }) {
           >
             <option value="">Select a slot</option>
             {slotOptions.map((slot, index) => (
-              <option key={index} value={slot}>
-                {slot}
+              <option key={index} value={slot.slotId}>
+                {slot.slotName}
               </option>
             ))}
           </select>

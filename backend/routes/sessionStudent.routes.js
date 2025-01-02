@@ -30,7 +30,7 @@ module.exports = (app) => {
 
     /**
      * @swagger
-     * /session-students/{sessionId}:
+     * /session-students/sessions/{sessionId}:
      *   get:
      *     summary: Retrieve a list of student in session
      *     tags: [SessionStudents]
@@ -51,7 +51,33 @@ module.exports = (app) => {
      *       404:
      *         description: Session not found
      */
-    router.get('/session-students/:sessionId', sessionStudentController.getStudentsInSession);
+    router.get('/session-students/sessions/:sessionId', sessionStudentController.getStudentsInSession);
+
+
+    /**
+     * @swagger
+     * /session-students/students/{studentId}:
+     *   get:
+     *     summary: Retrieve a list of session by student id
+     *     tags: [SessionStudents]
+     *     parameters:
+     *       - in: path
+     *         name: studentId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The student ID
+     *     responses:
+     *       200:
+     *         description: A list of students in the sesssion
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/SessionStudent'
+     *       404:
+     *         description: Session not found
+     */
+    router.get('/session-students/students/:studentId', sessionStudentController.getStudentsByStudentId);
 
     /**
      * @swagger
