@@ -21,25 +21,125 @@ function Main() {
   const [selectedSlot, setSelectedSlot] = useState(""); // Slot selected state
   const [selectedStudent, setSelectedStudent] = useState(null); // For storing selected student data
   const [selectedSession, setSelectedSession] = useState(null); // For storing selected session data
-  const [tableData, setTableData] = useState([]);
+  const [studentData, setStudentData] = useState([]);
+  const [sessionData, setSessionData] = useState([]);
+  const [courseData, setCourseData] = useState([]);
 
   const fetchCoursesData = async () => {
     try {
-      const course_data = await axios.get(`${backend_link}courses/`);
-      console.log(`${backend_link}courses/`);
-      console.log(course_data.data);
+      // Fetch class details
+      const classDataResponse = await axios.get(
+        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
+      );
+      const classData = classDataResponse.data;
+  
+      // Fetch sessions associated with the class
+      const sessionsResponse = await axios.get(
+        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
+      );
+      const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
+  
+      // Renew metrics for each session
+      await Promise.all(
+        sessionIds.map((sessionId) =>
+          axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
+        )
+      );
+  
+      // Calculate metrics for the class
+      await axios.put(
+        `${backend_link}metrics/calculate/class/${selectedSlot}`
+      );
+  
+      // Fetch metrics data for the class
+      const classMetricsResponse = await axios.get(
+        `${backend_link}metrics/${classData.metricsId}`
+      );
+      const classMetrics = classMetricsResponse.data;
+  
+      // Combine class data and metrics into the desired format
+      // !! fix this
+      const formattedData = {
+        courseId: classData.courseId,
+        courseName: classData.className,
+        stickiness: formatStickiness(classMetrics.stickiness),
+        percentageStickiness: `${(classMetrics.stickiness * 100).toFixed(0)}%`,
+        attendanceRate: `${(
+          (classMetrics.attendance / classMetrics.attendanceOver30Mins) *
+          100
+        ).toFixed(0)}%`,
+        avgTimeSpent: `${classMetrics.avgTimeSpent.toFixed(0)} mins`,
+        attendance30: `${(
+          (classMetrics.attendanceOver30Mins / classMetrics.attendance) *
+          100
+        ).toFixed(0)}%`,
+        attendanceCount: classMetrics.attendance,
+        correctness: `${(classMetrics.correctness * 100).toFixed(0)}%`,
+        improvement: formatImprovement(classMetrics.improvement),
+      };
+  
+      console.log("Formatted Data: ", formattedData);
+      setCourseData(formattedData); // Update state with formatted data
+    } catch (err) {
+      console.error("Error: ", err);
+      setCourseData(["Error"]); // Set error state
+    }
+  };
+  
+  // Helper function to map stickiness to categories
+  function formatStickiness(stickiness) {
+    if (stickiness > 0.8) return "high";
+    if (stickiness > 0.6) return "medium";
+    return "low";
+  }
+  
+  // Helper function to capitalize improvement categories
+  function formatImprovement(improvement) {
+    return improvement
+      ? improvement.charAt(0).toUpperCase() + improvement.slice(1)
+      : "Unknown";
+  }
+  
+
+  const fetchStudentData = async () => {
+    try {
+      const course_data = await axios.get(
+        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
+      );
+      // console.log(course_data.data);
       const data = course_data.data.map((item) => item.courseName);
-      setTableData(data);
-      // setCourses(course_data.data);
+      setStudentData(data);
     } catch (err) {
       console.log("error: ", err);
-      setTableData(["Error"]);
+      setStudentData(["Error"]);
     }
   };
 
-  // useEffect(()=>{
-  //   fetchCoursesData();
-  // })
+  const fetchSessionData = async () => {
+    try {
+      const course_data = await axios.get(
+        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
+      );
+      // console.log(course_data.data);
+      const data = course_data.data.map((item) => item.courseName);
+      setSessionData(data);
+    } catch (err) {
+      console.log("error: ", err);
+      setSessionData(["Error"]);
+    }
+  };
+
+  useEffect(() => {
+    if (courseData) {
+      fetchCoursesData();
+    } else {
+      if (activeTable === "students") {
+        fetchStudentData();
+      } else {
+        fetchSessionData();
+      }
+    }
+  }, [courseData]);
 
   const categories = [
     {
@@ -136,6 +236,7 @@ function Main() {
             onCourseChange={handleCourseChange}
             onSlotChange={handleSlotChange}
           />
+          <p>{selectedCourse}</p>
           <p>{selectedSlot}</p>
         </div>
         {/* Only show the table if both course and slot are selected */}
@@ -176,24 +277,26 @@ function Main() {
               <Button label={"Students"} action={showStudentsTable} />
               <Button label={"Sessions"} action={showSessionsTable} />
             </div>
-            {/* <div className="table_view">
+            <div className="table_view">
               {activeTable === "students" && (
-                <Table
-                  type="students"
-                  data={tableData}
-                  onSelectedRowsChange={handleSelectedRowsChange}
-                  onRowClick={handleStudentClick}
-                />
+                <p>Students</p>
+                // <Table
+                //   type="students"
+                //   data={tableData}
+                //   onSelectedRowsChange={handleSelectedRowsChange}
+                //   onRowClick={handleStudentClick}
+                // />
               )}
               {activeTable === "sessions" && (
-                <Table
-                  type="sessions"
-                  data={tableData}
-                  onSelectedRowsChange={handleSelectedRowsChange}
-                  onRowClick={handleSessionClick}
-                />
+                <p>Sessions</p>
+                // <Table
+                //   type="sessions"
+                //   data={tableData}
+                //   onSelectedRowsChange={handleSelectedRowsChange}
+                //   onRowClick={handleSessionClick}
+                // />
               )}
-            </div> */}
+            </div>
           </>
         ) : (
           <p>Please select a course and a slot to view the data.</p>

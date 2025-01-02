@@ -156,6 +156,38 @@ module.exports = app => {
      *         description: Internal server error
      */
 
+    /**
+     * @swagger
+     * /metrics/calculate/class/{classId}:
+     *   put:
+     *     summary: Update metrics by classId
+     *     tags: [Metrics]
+     *     parameters:
+     *       - in: path
+     *         name: classId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The Class ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Metrics'
+     *     responses:
+     *       200:
+     *         description: The updated metrics
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Metrics'
+     *       404:
+     *         description: Metrics not found
+     *       500:
+     *         description: Internal server error
+     */
+
 
     /**
      * @swagger
@@ -184,6 +216,7 @@ module.exports = app => {
     router.put('/metrics/:metricsId', metricsController.updateMetrics);
     router.put('/metrics/calculate/student/:studentId', metricsController.calculateStudent);
     router.put('/metrics/calculate/session/:sessionId', metricsController.calculateSession);
+    router.put('/metrics/calculate/class/:classId', metricsController.calculateClass);
     router.delete('/metrics/:metricsId', metricsController.deleteMetrics);
 
     app.use('/api', router);
