@@ -7,7 +7,11 @@ exports.getAllClasses = async (req, res) => {
     where: {
       courseId: req.params.courseId,
     },
-    include: Metrics,
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
   })
     .then((data) => {
       res.send(data);
@@ -25,7 +29,11 @@ exports.getClassById = async (req, res) => {
       courseId: req.params.courseId,
       classId: req.params.classId,
     },
-    include: Metrics,
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
   })
     .then((data) => {
       if (data) {
@@ -76,28 +84,28 @@ exports.createClass = async (req, res) => {
 // exports.updateClass = async (req, res) => {
 //     try {
 //       const classInstance = await Class.findOne({
-//       where: 
-//       { classId: req.params.classId, 
+//       where:
+//       { classId: req.params.classId,
 //         courseId: req.params.courseId },
 //     });
-  
+
 //       if (!classInstance) {
 //         return res.status(404).send("Class not found");
 //       }
-  
+
 //       const { classId, courseId, ...updateData } = req.body;
-  
+
 //       if (courseId) {
 //         const courseExists = await Course.findByPk(req.params.courseId);
-  
+
 //         if (!courseExists) {
 //           return res.status(400).send("Invalid courseId: Course does not exist");
 //         }
-  
+
 //         // Add courseId to updateData
 //         // updateData.courseId = courseId || req.params.courseId;
 //       }
-  
+
 //       // Update class data (excluding the primary key)
 //       await classInstance.update(updateData, { fields: Object.keys(updateData) });
 
@@ -113,7 +121,7 @@ exports.updateClass = async (req, res) => {
   try {
     const classInstance = await Class.findByPk(classId);
     if (!classInstance) {
-      return res.status(404).json({ message: 'Class not found' });
+      return res.status(404).json({ message: "Class not found" });
     }
     await classInstance.update(req.body);
     res.status(200).json(classInstance);
@@ -137,7 +145,7 @@ exports.deleteClass = async (req, res) => {
   try {
     const classInstance = await Class.findByPk(classId);
     if (!classInstance) {
-      return res.status(404).json({ message: 'Class not found' });
+      return res.status(404).json({ message: "Class not found" });
     }
     await classInstance.destroy();
     res.status(204).send();
@@ -152,10 +160,14 @@ exports.updateMetrics = async (req, res) => {
 
   try {
     const classInstance = await Class.findByPk(classId, {
-      include: Metrics,
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
     });
     if (!classInstance) {
-      return res.status(404).json({ message: 'Class not found' });
+      return res.status(404).json({ message: "Class not found" });
     }
 
     if (classInstance.Metrics) {
@@ -170,7 +182,7 @@ exports.updateMetrics = async (req, res) => {
         stickiness,
         correctness,
         attendance,
-        improvement
+        improvement,
       });
       classInstance.metricsId = metrics.metricsId;
       await classInstance.save();

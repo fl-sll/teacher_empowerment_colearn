@@ -153,12 +153,14 @@ exports.calculateStudent = async (req, res) => {
             attendanceOver30Mins: avgAttendanceOver30Mins,
             attendance: avgAttendance,
             correctness: avgCorrectness,
-            improvement: "no improvement", // Add improvement logic if needed
+            improvement: "no improvement", // Add improvement logic if needed,
+            studentId: studentId
           });
   
           return res.status(200).json({
             message: "Metrics entry updated successfully",
             metricsId: student.metricsId,
+            studentId: studentId
           });
         } else {
           return res.status(404).json({
@@ -180,6 +182,7 @@ exports.calculateStudent = async (req, res) => {
           attendance: 0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
+          studentId: studentId
         });
   
         // Update the metrics entry with the calculated averages
@@ -192,6 +195,7 @@ exports.calculateStudent = async (req, res) => {
           attendance: avgAttendance,
           correctness: avgCorrectness,
           improvement: "no improvement",
+          studentId: studentId
         });
   
         // Update the student with the new metricsId
@@ -311,11 +315,13 @@ exports.calculateSession = async (req, res) => {
             attendance: avgAttendance,
             correctness: avgCorrectness,
             improvement: "no improvement", // Add improvement logic if needed
+            sessionId: sessionId
           });
   
           return res.status(200).json({
             message: "Metrics entry updated successfully",
             metricsId: session.metricsId,
+            sessionId: sessionId
           });
         } else {
           return res.status(404).json({
@@ -337,6 +343,7 @@ exports.calculateSession = async (req, res) => {
           attendance: 0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
+          sessionId: sessionId
         });
   
         // Update the metrics entry with the calculated averages
@@ -349,6 +356,7 @@ exports.calculateSession = async (req, res) => {
           attendance: avgAttendance,
           correctness: avgCorrectness,
           improvement: "no improvement",
+          sessionId: sessionId
         });
   
         // Update the session with the new metricsId
@@ -447,11 +455,13 @@ exports.calculateSession = async (req, res) => {
             attendance: avgAttendance,
             correctness: avgCorrectness,
             improvement: "no improvement", // Add improvement logic if needed
+            classId : classId
           });
   
           return res.status(200).json({
             message: "Metrics entry updated successfully",
             metricsId: classData.metricsId,
+            classId : classId
           });
         } else {
           return res.status(404).json({
@@ -471,6 +481,7 @@ exports.calculateSession = async (req, res) => {
           attendance: 0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
+          classId : classId
         });
   
         // Update the metrics entry with the calculated averages
@@ -481,6 +492,7 @@ exports.calculateSession = async (req, res) => {
           attendance: avgAttendance,
           correctness: avgCorrectness,
           improvement: "no improvement",
+          classId : classId
         });
   
         // Update the class with the new metricsId

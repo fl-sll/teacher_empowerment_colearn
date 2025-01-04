@@ -2,12 +2,28 @@ const Student = require("../models/Student");
 const Metrics = require("../models/Metrics");
 
 exports.getAllStudents = async (req, res) => {
-  const students = await Student.findAll();
+  const students = await Student.findAll({
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
+  });
   res.json(students);
 };
 
 exports.getStudentById = async (req, res) => {
-  const student = await Student.findByPk(req.params.studentId);
+  // const student = await Student.findByPk(req.params.studentId);
+  const student = await Student.findOne({
+    where: {
+      studentId: req.params.studentId,
+    },
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
+  });
   if (student) {
     res.json(student);
   } else {

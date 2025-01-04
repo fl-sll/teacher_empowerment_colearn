@@ -7,7 +7,11 @@ exports.getAllSessions = async (req, res) => {
       where: {
         classId: req.params.classId,
       },
-      include: Metrics,
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
     });
     res.send(sessions);
   } catch (err) {
@@ -24,7 +28,11 @@ exports.getSessionById = async (req, res) => {
         classId: req.params.classId,
         sessionId: req.params.sessionId,
       },
-      include: Metrics,
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
     });
     if (session) {
       res.send(session);
@@ -54,7 +62,7 @@ exports.updateSession = async (req, res) => {
   try {
     const session = await Session.findByPk(sessionId);
     if (!session) {
-      return res.status(404).json({ message: 'Session not found' });
+      return res.status(404).json({ message: "Session not found" });
     }
     await session.update(req.body);
     res.status(200).json(session);
@@ -68,7 +76,7 @@ exports.deleteSession = async (req, res) => {
   try {
     const session = await Session.findByPk(sessionId);
     if (!session) {
-      return res.status(404).json({ message: 'Session not found' });
+      return res.status(404).json({ message: "Session not found" });
     }
     await session.destroy();
     res.status(204).send();
@@ -83,10 +91,14 @@ exports.updateMetrics = async (req, res) => {
 
   try {
     const session = await Session.findByPk(sessionId, {
-      include: Metrics,
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
     });
     if (!session) {
-      return res.status(404).json({ message: 'Session not found' });
+      return res.status(404).json({ message: "Session not found" });
     }
 
     if (session.Metrics) {
@@ -101,7 +113,7 @@ exports.updateMetrics = async (req, res) => {
         stickiness,
         correctness,
         attendance,
-        improvement
+        improvement,
       });
       session.metricsId = metrics.metricsId;
       await session.save();

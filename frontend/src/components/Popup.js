@@ -31,11 +31,12 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
   if (!isOpen) return null;
 
   const categoryList = [
-    { id: 1, name: "Avg.Attendance" },
-    { id: 2, name: "Avg.Score" },
-    { id: 3, name: "Participation" },
-    { id: 4, name: "Homework Completion" },
-    { id: 5, name: "Engagement" },
+    { id: 1, name: "Stickiness" },
+    { id: 2, name: "Attendance" },
+    { id: 3, name: "Time Spent" },
+    { id: 4, name: "30 mins Attendance" },
+    { id: 5, name: "Attendance Count" },
+    { id: 6, name: "Correctness" },
   ];
 
   return (
@@ -57,6 +58,7 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
         </div>
         <div className="popup-buttons">
           <button
+            className="blue"
             onClick={handleSubmit}
             disabled={selectedCategories.length !== 3}
           >

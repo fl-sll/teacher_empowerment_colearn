@@ -2,12 +2,24 @@ const SessionStudent = require("../models/SessionStudent");
 const Metrics = require("../models/Metrics");
 
 exports.getAllSessionStudents = async (req, res) => {
-  const sessionStudents = await SessionStudent.findAll();
+  const sessionStudents = await SessionStudent.findAll({
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
+  });
   res.json(sessionStudents);
 };
 
 exports.getSessionStudentById = async (req, res) => {
-  const sessionStudent = await SessionStudent.findByPk(req.params.id);
+  const sessionStudent = await SessionStudent.findByPk(req.params.id, {
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
+  });
   if (sessionStudent) {
     res.json(sessionStudent);
   } else {
@@ -20,6 +32,11 @@ exports.getStudentsInSession = async (req, res) => {
     where: {
       sessionId: req.params.sessionId,
     },
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
   });
   if (sessionStudent) {
     res.json(sessionStudent);
@@ -34,6 +51,11 @@ exports.getStudentsByStudentId = async (req, res) => {
     where: {
       studentId: req.params.studentId,
     },
+    include: [
+      {
+        model: Metrics,
+      },
+    ],
   });
   if (sessionStudent) {
     res.json(sessionStudent);
@@ -88,7 +110,11 @@ exports.updateMetrics = async (req, res) => {
   try {
     const sessionStudent = await SessionStudent.findOne({
       where: { sessionId, studentId },
-      include: Metrics,
+      include: [
+        {
+          model: Metrics,
+        },
+      ],
     });
     if (!sessionStudent) {
       return res.status(404).json({ message: "SessionStudent not found" });
