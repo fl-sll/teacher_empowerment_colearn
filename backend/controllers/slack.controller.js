@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 exports.sendToSlack = async (req, res) => {
   const slackWebhookUrl = process.env.REACT_APP_WEBHOOK_LINK;
   const message = req.body;
@@ -9,6 +7,7 @@ exports.sendToSlack = async (req, res) => {
   }
 
   try {
+    const fetch = (await import('node-fetch')).default;
     console.log("Sending request to Slack:", slackWebhookUrl, message);
     const response = await fetch(slackWebhookUrl, {
       method: "POST",

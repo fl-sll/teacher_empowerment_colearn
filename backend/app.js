@@ -28,6 +28,7 @@ require("./routes/class.routes.js")(app);
 require("./routes/session.routes.js")(app);
 require("./routes/student.routes.js")(app);
 require("./routes/sessionStudent.routes.js")(app);
+require('./routes/slack.routes.js')(app);
 
 sequelize
   .authenticate()
