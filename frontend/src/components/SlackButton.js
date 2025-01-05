@@ -1,4 +1,6 @@
 import React from "react";
+import Button from "./Button";
+import slack from "../assets/slack-brands-solid.svg"
 import logo from "../assets/slack_logo.png";
 
 function SlackButton({ selectedRows, onSendData, selectedCourse, selectedSlot }) {
@@ -40,10 +42,16 @@ function SlackButton({ selectedRows, onSendData, selectedCourse, selectedSlot })
   };
 
   return (
-    <button className="custom_button slack" onClick={handleSendData} style={{ padding: "10px 20px", fontSize: "16px" }}>
-      {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
-      Send Notification
-    </button>
+    // <button className="custom_button" onClick={handleSendData} style={{ padding: "10px 20px", fontSize: "16px" }}>
+    //   {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
+    //   Send Notification
+    // </button>
+        <Button
+        label={"Send to Slack"}
+        logo={slack}
+        border={"customize"}
+        action={handleSendData}
+      />
   );
 }
 

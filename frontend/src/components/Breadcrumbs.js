@@ -4,7 +4,7 @@ import "../styles/Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-function Breadcrumbs({ name }) {
+function Breadcrumbs({ type, name }) {
   const navigate = useNavigate();
 
   const currentDate = new Date().toLocaleDateString("en-GB", {
@@ -13,16 +13,19 @@ function Breadcrumbs({ name }) {
     year: "numeric",
   });
 
+  // Determine the header title based on the type prop
+  const engagementTitle = type === "session" ? "Session Engagement" : "Student Engagement";
+
   return (
     <div className="header-container">
-      <h2>Student Engagement</h2>
+      <h2>{engagementTitle}</h2>
       <div className="back">
         <div
           className="arrow-container"
-          onClick={() => navigate("/")} 
-          style={{ cursor: "pointer" }} 
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
         >
-          <FontAwesomeIcon icon={faArrowLeft}/>
+          <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <h3>{name}</h3>
       </div>

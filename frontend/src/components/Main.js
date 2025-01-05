@@ -223,7 +223,7 @@ function Main() {
                   selectedCourse={selectedCourse} // Pass selected course
                   selectedSlot={selectedSlot} // Pass selected slot
                 />
-                {/* <DownloadButton data={courseData}/> */}
+                {/* <DownloadButton data={courseData} name={`${selectedCourse}-${selectedSlot}`}/> */}
               </div>
             </div>
             <div className="button_details">

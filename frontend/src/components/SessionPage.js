@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/StudentPage.css";
-// import slotData from "./data";
-// import SlackButton from "./SlackButton";
 import Chip from "./Chip";
 import SideBar from "./SideBar";
 import { backend_link } from "./CONST";
@@ -14,58 +12,54 @@ import DetailedTable from "./DetailedTable";
 import DownloadButton from "./DownloadButton";
 import Breadcrumbs from "./Breadcrumbs";
 
-function StudentPage({ props }) {
+function SessionPage({ props }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
   const [tableData, setTableData] = useState();
-  const { studentId } = useParams();
-  const [studentName, setStudentName] = useState();
+  const { sessionId } = useParams();
+  const [sessionName, setSessionName] = useState();
 
   const fetchData = async () => {
     try {
-      console.log(studentId);
-      // get student name
-      const name = await axios.get(
-        `${backend_link}students/${studentId}`
-      );
+      console.log(sessionId);
+      // get session name
+      const name = await axios.get(`${backend_link}sessions/${sessionId}`);
 
-      setStudentName(name.data.studentName);
-      console.log(studentName);
-      // get list of sesionStudent by studentID
+      setSessionName(name.data.sessionName);
+      console.log(sessionName);
+      // get list of sesionStudent by sessionId
       const sessionStudents = await axios.get(
-        `${backend_link}session-students/students/${studentId}`
+        `${backend_link}session-students/sessions/${sessionId}`
       );
       console.log(sessionStudents.data);
 
-      // get session_ids
-      const sesssionIds = sessionStudents.data.map((s) => s.sessionId);
+      // get studentIds
+      const studentIds = sessionStudents.data.map((s) => s.studentId);
 
       // get sessionName by session_id
-      const sessionDataPromises = sesssionIds.map(async (sessionId) => {
+      const studentResponsePromises = studentIds.map(async (s) => {
         // !! only enable if there are new data
         // await axios.put(
         //   `${backend_link}metrics/calculate/student/${studentId}`
         // );
-        const sessionResponses = await axios.get(
-          `${backend_link}sessions/${sessionId}`
-        );
-        return sessionResponses.data;
+        const studentResponse = await axios.get(`${backend_link}students/${s}`);
+        return studentResponse.data;
       });
 
       // Resolve all promises to get the detailed student data
-      const session_data = await Promise.all(sessionDataPromises);
+      const student_data = await Promise.all(studentResponsePromises);
 
       // combine data
       const combinedData = sessionStudents.data.map((s) => {
         // Find corresponding sessionData entry
-        const sessionDetails = session_data.find(
-          (session) => session.sessionId === s.sessionId
+        const studentDetails = student_data.find(
+          (student) => student.studentId === s.studentId
         );
 
         // Create combined object
         return {
-          sessionName: sessionDetails?.sessionName || "Unknown", // Fallback to "Unknown" if not found
-          date: sessionDetails?.date || "Unknown",
+          id: studentDetails.studentId,
+          sessionName: studentDetails?.studentName || "Unknown", 
           pretest: s.pretest,
           posttest: s.posttest,
           Metric: s.Metric, // Metrics from sessionStudents
@@ -146,11 +140,11 @@ function StudentPage({ props }) {
       <div className="main">
         {/* new header here */}
         {/* <Breadcrumbs name={studentName} /> */}
-        {studentName ? (
-          <Breadcrumbs name={studentName} />
-            ) : (
-              <p>Loading data...</p>
-            )}
+        {sessionName ? (
+          <Breadcrumbs name={sessionName} />
+        ) : (
+          <p>Loading data...</p>
+        )}
         <>
           <div className="chips">
             {categories
@@ -182,26 +176,23 @@ function StudentPage({ props }) {
                   selectedSlot={selectedSlot} // Pass selected slot
                 /> */}
               {tableData ? (
-              <DownloadButton data={tableData} name={`${studentId}-${studentName}`}/>
-            ) : (
-              <p>Loading data...</p>
-            )}
+                <DownloadButton data={tableData} name={`${sessionId}-${sessionName}`}/>
+              ) : (
+                <p>Loading data...</p>
+              )}
             </div>
           </div>
           <div className="table_view">
             {tableData ? (
-              <DetailedTable type="student" data={tableData} />
+              <DetailedTable type="session" data={tableData} />
             ) : (
               <p>Loading data...</p>
             )}
           </div>
         </>
-        {/* ) : (
-          <p>Please select a course and a slot to view the data.</p>
-        )} */}
       </div>
     </div>
   );
 }
 
-export default StudentPage;
+export default SessionPage;

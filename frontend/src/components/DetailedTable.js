@@ -6,9 +6,11 @@ const DetailedTable = ({ type, data }) => {
   const [tableData, setTableData] = useState(data);
   const [searchTerm, setSearchTerm] = useState("");
   console.log("detailed", tableData);
+
+  // Dynamic headers based on type
   const headers = [
     "Name",
-    "Date",
+    type === "session" ? "Attendance Rate" : "Date",
     "Time Spent in Class",
     "Stickiness",
     "Pre-test",
@@ -79,7 +81,14 @@ const DetailedTable = ({ type, data }) => {
           {tableData.map((row, rowIndex) => (
             <tr key={rowIndex}>
               <td>{row.sessionName}</td>
-              <td>{row.date}</td>
+              {/* Dynamically render Date or Attendance Rate based on type */}
+              <td>
+                {type === "session"
+                  ? row.Metric
+                    ? `${getPercentage(row.Metric.attendanceRate)}%`
+                    : "N/A"
+                  : row.date}
+              </td>
               <td>{row.Metric ? row.Metric.avgTimeSpent : "N/A"}</td>
               <td>
                 {row.Metric ? (
@@ -99,11 +108,15 @@ const DetailedTable = ({ type, data }) => {
               </td>
               <td>{row.Metric ? row.Metric.improvement : "N/A"}</td>
               <td>
-                {row.Metric
-                  ? 
-                  <Label text={getImprovementCategory(row.Metric.improvement).toUpperCase()} />
-                  // getImprovementCategory(row.Metric.improvement)
-                  : "Loading..."}
+                {row.Metric ? (
+                  <Label
+                    text={getImprovementCategory(
+                      row.Metric.improvement
+                    ).toUpperCase()}
+                  />
+                ) : (
+                  "Loading..."
+                )}
               </td>
             </tr>
           ))}
