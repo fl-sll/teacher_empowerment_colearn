@@ -96,7 +96,7 @@ const options = {
             metricsId: {
               type: "number",
               description: "The ID of the metrics",
-            }
+            },
           },
         },
         SessionStudent: {
@@ -139,7 +139,8 @@ const options = {
           properties: {
             metricsId: {
               type: "integer",
-              description: "The unique identifier for the metrics (primary key)",
+              description:
+                "The unique identifier for the metrics (primary key)",
             },
             stickiness: {
               type: "number",
@@ -168,7 +169,18 @@ const options = {
             },
             improvement: {
               type: "string",
-              description: "The improvement metrics as a qualitative descriptor",
+              description:
+                "The improvement metrics as a qualitative descriptor",
+            },
+          },
+          Slack: {
+            type: "object",
+            required: ["text"],
+            properties: {
+              text: {
+                type: "string",
+                description: "The message text to send to Slack",
+              },
             },
           },
         },

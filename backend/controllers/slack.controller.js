@@ -1,29 +1,34 @@
+require("dotenv").config();
+const axios = require("axios"); // Import axios
+
 exports.sendToSlack = async (req, res) => {
   const slackWebhookUrl = process.env.REACT_APP_WEBHOOK_LINK;
   const message = req.body;
 
   if (!message || !message.text) {
-    return res.status(400).send("Invalid request: 'text' property is required.");
+    return res
+      .status(400)
+      .send("Invalid request: 'text' property is required.");
   }
 
   try {
-    const fetch = (await import('node-fetch')).default;
-    console.log("Sending request to Slack:", slackWebhookUrl, message);
-    const response = await fetch(slackWebhookUrl, {
-      method: "POST",
+    // Send POST request using axios
+    const response = await axios.post(slackWebhookUrl, message, {
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(message),
     });
 
-    if (response.ok) {
-      res.status(200).send("Message sent to Slack successfully!");
-    } else {
-      const errorText = await response.text();
-      console.error("Slack response error:", response.status, errorText);
-      res.status(response.status).send(`Failed to send message to Slack: ${errorText}`);
-    }
+    res.status(200).send("Message sent to Slack successfully!");
   } catch (error) {
-    console.error("Internal error:", error);
-    res.status(500).send(`Error sending message to Slack: ${error.message}`);
+    if (error.response) {
+      // Handle errors from Slack API
+      res
+        .status(error.response.status)
+        .send(`Failed to send message to Slack: ${error.response.data}`);
+    } else {
+      // Handle network or other errors
+      res
+        .status(500)
+        .send(`Error sending message to Slack: ${error.message}`);
+    }
   }
 };

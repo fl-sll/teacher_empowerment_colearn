@@ -28,33 +28,34 @@ function Main() {
   const fetchCoursesData = async () => {
     try {
       // Fetch class details
+      console.log("new")
       const classDataResponse = await axios.get(
         `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
       );
       const classData = classDataResponse.data;
-
+      console.log("test")
       // Fetch sessions associated with the class
-      const sessionsResponse = await axios.get(
-        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
-      );
-      const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
+      // const sessionsResponse = await axios.get(
+      //   `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
+      // );
+      // const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
 
       // Renew metrics for each session
-      await Promise.all(
-        sessionIds.map((sessionId) =>
-          axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
-        )
-      );
-
+      // await Promise.all(
+      //   sessionIds.map((sessionId) =>
+      //     axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
+      //   )
+      // );
+      console.log("test 2")
       // Calculate metrics for the class
-      await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
+      // await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
 
       // Fetch metrics data for the class
       const classMetricsResponse = await axios.get(
         `${backend_link}metrics/${classData.metricsId}`
       );
       const classMetrics = classMetricsResponse.data;
-
+      console.log("test 3")
       // Combine class data and metrics into the desired format
       // !! fix this
       const formattedData = {
@@ -83,39 +84,10 @@ function Main() {
     }
   };
 
-  // const fetchStudentData = async () => {
-  //   try {
-  //     const course_data = await axios.get(
-  //       `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
-  //     );
-  //     // console.log(course_data.data);
-  //     const data = course_data.data.map((item) => item.courseName);
-  //     setStudentData(data);
-  //   } catch (err) {
-  //     console.log("error: ", err);
-  //     setStudentData(["Error"]);
-  //   }
-  // };
-
-  // const fetchSessionData = async () => {
-  //   try {
-  //     const course_data = await axios.get(
-  //       `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
-  //     );
-  //     // console.log(course_data.data);
-  //     const data = course_data.data.map((item) => item.courseName);
-  //     setSessionData(data);
-  //   } catch (err) {
-  //     console.log("error: ", err);
-  //     setSessionData(["Error"]);
-  //   }
-  // };
-
   useEffect(() => {
-    if (courseData) {
-      fetchCoursesData();
-    }
-  }, []);
+    if(selectedSlot){
+    fetchCoursesData();}
+  }, [selectedSlot]);
 
   const categories = [
     {
