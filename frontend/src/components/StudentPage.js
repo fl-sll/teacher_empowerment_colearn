@@ -2,20 +2,87 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/StudentPage.css";
 // import slotData from "./data";
-import SlackButton from "./SlackButton";
+// import SlackButton from "./SlackButton";
 import Chip from "./Chip";
 import SideBar from "./SideBar";
-// import Header from "./Header";
+import { backend_link } from "./CONST";
 import Button from "./Button";
 import slider from "../assets/sliders-solid.svg";
-import Table from "./Table";
+import axios from "axios";
 import Popup from "./Popup";
+import DetailedTable from "./DetailedTable";
 import DownloadButton from "./DownloadButton";
+import Breadcrumbs from "./Breadcrumbs";
 
-function StudentPage({ student, props }) {
-  // const id = props;
+function StudentPage({ props }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
+  const [tableData, setTableData] = useState();
+  const { studentId } = useParams();
+  const [studentName, setStudentName] = useState();
+
+  const fetchData = async () => {
+    try {
+      console.log(studentId);
+      // get student name
+      const name = await axios.get(
+        `${backend_link}students/${studentId}`
+      );
+
+      setStudentName(name.data.studentName);
+      console.log(studentName);
+      // get list of sesionStudent by studentID
+      const sessionStudents = await axios.get(
+        `${backend_link}session-students/students/${studentId}`
+      );
+      console.log(sessionStudents.data);
+
+      // get session_ids
+      const sesssionIds = sessionStudents.data.map((s) => s.sessionId);
+
+      // get sessionName by session_id
+      const sessionDataPromises = sesssionIds.map(async (sessionId) => {
+        // !! only enable if there are new data
+        // await axios.put(
+        //   `${backend_link}metrics/calculate/student/${studentId}`
+        // );
+        const sessionResponses = await axios.get(
+          `${backend_link}sessions/${sessionId}`
+        );
+        return sessionResponses.data;
+      });
+
+      // Resolve all promises to get the detailed student data
+      const session_data = await Promise.all(sessionDataPromises);
+
+      // combine data
+      const combinedData = sessionStudents.data.map((s) => {
+        // Find corresponding sessionData entry
+        const sessionDetails = session_data.find(
+          (session) => session.sessionId === s.sessionId
+        );
+
+        // Create combined object
+        return {
+          sessionName: sessionDetails?.sessionName || "Unknown", // Fallback to "Unknown" if not found
+          date: sessionDetails?.date || "Unknown",
+          pretest: s.pretest,
+          posttest: s.posttest,
+          Metric: s.Metric, // Metrics from sessionStudents
+        };
+      });
+
+      setTableData(combinedData);
+      console.log(combinedData);
+    } catch (err) {
+      console.log("error: ", err);
+      setTableData(["Error"]);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const categories = [
     {
@@ -55,60 +122,9 @@ function StudentPage({ student, props }) {
     },
   ];
 
-  const sample = [
-    {
-      id: 1,
-      name: "Algebra",
-      stickiness: "medium",
-      percentageStickiness: "72%",
-      attendanceRate: "85%",
-      avgTimeSpent: "50 mins",
-      attendance30: "65%",
-      attendanceCount: 14,
-      correctness: "78%",
-      improvement: "Medium",
-    },
-    {
-      id: 2,
-      name: "Geometry",
-      stickiness: "high",
-      percentageStickiness: "91%",
-      attendanceRate: "96%",
-      avgTimeSpent: "63 mins",
-      attendance30: "90%",
-      attendanceCount: 20,
-      correctness: "89%",
-      improvement: "Very High",
-    },
-    {
-      id: 3,
-      name: "Trigonometry",
-      stickiness: "low",
-      percentageStickiness: "61%",
-      attendanceRate: "78%",
-      avgTimeSpent: "42 mins",
-      attendance30: "55%",
-      attendanceCount: 9,
-      correctness: "66%",
-      improvement: "Low",
-    },
-    {
-      id: 4,
-      name: "Calculus",
-      stickiness: "high",
-      percentageStickiness: "83%",
-      attendanceRate: "90%",
-      avgTimeSpent: "57 mins",
-      attendance30: "80%",
-      attendanceCount: 17,
-      correctness: "85%",
-      improvement: "High",
-    },
-  ];
-
-  const handleSendData = (selectedRows) => {
-    alert(`Sending data: ${JSON.stringify(selectedRows)}`);
-  };
+  // const handleSendData = (selectedRows) => {
+  //   alert(`Sending data: ${JSON.stringify(selectedRows)}`);
+  // };
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -122,63 +138,64 @@ function StudentPage({ student, props }) {
     setSelectedCategories(categories);
   };
 
-  const { studentId } = useParams();
-
   return (
     <div className="Main">
       <div className="sidebar">
         <SideBar />
       </div>
       <div className="main">
-        {/* <div className="header">
-          <p>{courses}</p>
-          <Header
-            onCourseChange={handleCourseChange}
-            onSlotChange={handleSlotChange}
-          />
-        </div> */}
-        {/* Only show the table if both course and slot are selected */}
-        {/* {selectedCourse && selectedSlot ? ( */}
-          <>
-            <div className="chips">
-              {categories
-                .filter((category) => selectedCategories.includes(category.id))
-                .map((category) => (
-                  <Chip
-                    key={category.id}
-                    metric={category}
-                    isVisible={selectedCategories.includes(category.id)}
-                  />
-                ))}
-              <div className="customize">
-                <Button
-                  label={"Customize"}
-                  logo={slider}
-                  border={"customize"}
-                  action={handleOpenPopup}
+        {/* new header here */}
+        {/* <Breadcrumbs name={studentName} /> */}
+        {studentName ? (
+          <Breadcrumbs name={studentName} />
+            ) : (
+              <p>Loading data...</p>
+            )}
+        <>
+          <div className="chips">
+            {categories
+              .filter((category) => selectedCategories.includes(category.id))
+              .map((category) => (
+                <Chip
+                  key={category.id}
+                  metric={category}
+                  isVisible={selectedCategories.includes(category.id)}
                 />
-                <Popup
-                  isOpen={isPopupOpen}
-                  onClose={handleClosePopup}
-                  categories={selectedCategories}
-                  onSelectCategories={handleSelectCategories}
-                />
-                {/* <SlackButton
+              ))}
+            <div className="customize">
+              <Button
+                label={"Customize"}
+                logo={slider}
+                border={"customize"}
+                action={handleOpenPopup}
+              />
+              <Popup
+                isOpen={isPopupOpen}
+                onClose={handleClosePopup}
+                categories={selectedCategories}
+                onSelectCategories={handleSelectCategories}
+              />
+              {/* <SlackButton
                   selectedRows={selectedRows}
                   onSendData={handleSendData}
                   selectedCourse={selectedCourse} // Pass selected course
                   selectedSlot={selectedSlot} // Pass selected slot
                 /> */}
-                <DownloadButton data={sample}/>
-              </div>
+              {tableData ? (
+              <DownloadButton data={tableData} />
+            ) : (
+              <p>Loading data...</p>
+            )}
             </div>
-            <div className="table_view">
-                <Table
-                  type="students"
-                  data={sample}
-                />  
-            </div>
-          </>
+          </div>
+          <div className="table_view">
+            {tableData ? (
+              <DetailedTable type="student" data={tableData} />
+            ) : (
+              <p>Loading data...</p>
+            )}
+          </div>
+        </>
         {/* ) : (
           <p>Please select a course and a slot to view the data.</p>
         )} */}

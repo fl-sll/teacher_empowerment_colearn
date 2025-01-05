@@ -15,14 +15,21 @@
     font-weight: 500;
   }
   
-  .cropped-image {
+  /* .cropped-image {
     position: absolute;
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 100%; /* Keep the image width */
-    height: auto; /* Maintain aspect ratio */
-  }
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    height: auto; 
+  } */
 
   .colearn_logo{
     height: auto;
+    width: 100%;
+  }
+
+  Link{
+    text-decoration: none;
+    color: inherit;
+    /* height: 30px; */
   }

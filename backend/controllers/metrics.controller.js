@@ -129,12 +129,17 @@ exports.calculateStudent = async (req, res) => {
         (sum, entry) => sum + entry.correctness,
         0
       );
+      const totalAttendanceRate = metricsEntries.reduce(
+        (sum, entry) => sum + entry.attendanceRate,
+        0
+      );
   
       const avgStickiness = totalStickiness / metricsEntries.length;
       const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
       const avgAttendanceOver30Mins = totalAttendanceOver30Mins / metricsEntries.length;
       const avgAttendance = totalAttendance / metricsEntries.length;
       const avgCorrectness = totalCorrectness / metricsEntries.length;
+      const avgAttendanceRate = totalAttendanceRate / metricsEntries.length;
   
       // Check if the student already has a metricsId
       if (student.metricsId) {
@@ -151,6 +156,7 @@ exports.calculateStudent = async (req, res) => {
             stickiness: avgStickiness,
             avgTimeSpent: avgAvgTimeSpent,
             attendanceOver30Mins: avgAttendanceOver30Mins,
+            attendanceRate: attendanceRate,
             attendance: avgAttendance,
             correctness: avgCorrectness,
             improvement: "no improvement", // Add improvement logic if needed,
@@ -180,6 +186,7 @@ exports.calculateStudent = async (req, res) => {
           avgTimeSpent: 0,
           attendanceOver30Mins: 0,
           attendance: 0,
+          attendanceRate:0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
           studentId: studentId
@@ -193,6 +200,7 @@ exports.calculateStudent = async (req, res) => {
           avgTimeSpent: avgAvgTimeSpent,
           attendanceOver30Mins: avgAttendanceOver30Mins,
           attendance: avgAttendance,
+          attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
           improvement: "no improvement",
           studentId: studentId
@@ -290,11 +298,16 @@ exports.calculateSession = async (req, res) => {
         (sum, entry) => sum + entry.correctness,
         0
       );
+      const totalAttendanceRate = metricsEntries.reduce(
+        (sum, entry) => sum + entry.attendanceRate,
+        0
+      );
   
       const avgStickiness = totalStickiness / metricsEntries.length;
       const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
       const avgAttendanceOver30Mins = totalAttendanceOver30Mins / metricsEntries.length;
       const avgAttendance = totalAttendance / metricsEntries.length;
+      const avgAttendanceRate = totalAttendanceRate / metricsEntries.length;
       const avgCorrectness = totalCorrectness / metricsEntries.length;
   
       // Check if the session already has a metricsId
@@ -313,6 +326,7 @@ exports.calculateSession = async (req, res) => {
             avgTimeSpent: avgAvgTimeSpent,
             attendanceOver30Mins: avgAttendanceOver30Mins,
             attendance: avgAttendance,
+            attendanceRate: avgAttendanceRate,
             correctness: avgCorrectness,
             improvement: "no improvement", // Add improvement logic if needed
             sessionId: sessionId
@@ -341,6 +355,7 @@ exports.calculateSession = async (req, res) => {
           avgTimeSpent: 0,
           attendanceOver30Mins: 0,
           attendance: 0,
+          attendanceRate: 0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
           sessionId: sessionId
@@ -354,6 +369,7 @@ exports.calculateSession = async (req, res) => {
           avgTimeSpent: avgAvgTimeSpent,
           attendanceOver30Mins: avgAttendanceOver30Mins,
           attendance: avgAttendance,
+          attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
           improvement: "no improvement",
           sessionId: sessionId
@@ -432,11 +448,16 @@ exports.calculateSession = async (req, res) => {
         (sum, entry) => sum + entry.correctness,
         0
       );
+      const totalAttendanceRate = metricsEntries.reduce(
+        (sum, entry) => sum + entry.attendanceRate,
+        0
+      );
   
       const avgStickiness = totalStickiness / metricsEntries.length;
       const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
       const avgAttendanceOver30Mins = totalAttendanceOver30Mins / metricsEntries.length;
       const avgAttendance = totalAttendance / metricsEntries.length;
+      const avgAttendanceRate = totalAttendanceRate / metricsEntries.length;
       const avgCorrectness = totalCorrectness / metricsEntries.length;
   
       // Check if the class already has a metricsId
@@ -453,6 +474,7 @@ exports.calculateSession = async (req, res) => {
             avgTimeSpent: avgAvgTimeSpent,
             attendanceOver30Mins: avgAttendanceOver30Mins,
             attendance: avgAttendance,
+            attendanceRate: avgAttendanceRate,
             correctness: avgCorrectness,
             improvement: "no improvement", // Add improvement logic if needed
             classId : classId
@@ -479,6 +501,7 @@ exports.calculateSession = async (req, res) => {
           avgTimeSpent: 0,
           attendanceOver30Mins: 0,
           attendance: 0,
+          attendanceRate: 0,
           correctness: 0,
           improvement: "no improvement", // Add improvement logic if needed
           classId : classId
@@ -490,6 +513,7 @@ exports.calculateSession = async (req, res) => {
           avgTimeSpent: avgAvgTimeSpent,
           attendanceOver30Mins: avgAttendanceOver30Mins,
           attendance: avgAttendance,
+          attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
           improvement: "no improvement",
           classId : classId

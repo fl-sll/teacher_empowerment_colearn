@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Main />} />
         <Route path="/student/:studentId" element={<StudentPage />} />
+        {/* <Route path="/session/:sessionId" element={<SessionPage />} /> */}
       </Routes>
     </Router>
   );

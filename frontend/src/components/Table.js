@@ -19,36 +19,47 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
     "Improvement",
   ];
 
+
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
     try {
-      // get student data
+      // get session data in that class
       const session = await axios.get(
         `${backend_link}courses/${course}/classes/${slot}/sessions`
       );
-      const session_id = session.data[0].sessionId;
-      console.log(session_id);
-      const students = await axios.get(
-        `${backend_link}session-students/sessions/${session_id}`
-      );
-      const student_ids = students.data.map((s) => s.studentId);
-
-      // Fetch detailed student data
-      const studentDataPromises = student_ids.map(async (studentId) => {
-        await axios.put(`${backend_link}metrics/calculate/student/${studentId}`);
-        const studentResponse = await axios.get(
-          `${backend_link}students/${studentId}`
+      if (type === "students") {
+        // get one session id
+        const session_id = session.data[0].sessionId;
+        // console.log(session_id);
+        // get the students in that session
+        const students = await axios.get(
+          `${backend_link}session-students/sessions/${session_id}`
         );
-        return studentResponse.data;
-      });
+        // map the result to a collection of student ids
+        const student_ids = students.data.map((s) => s.studentId);
 
-      // Resolve all promises to get the detailed student data
-      const student_data = await Promise.all(studentDataPromises);
-      console.log(student_data);
-      console.log(student_data[0].studentName);
-      console.log(student_data[0].Metric.stickiness);
-      setData(student_data);
+        // get all students based on the student id array
+        const studentDataPromises = student_ids.map(async (studentId) => {
+          // !! only enable if there are new data
+          // await axios.put(
+          //   `${backend_link}metrics/calculate/student/${studentId}`
+          // );
+          const studentResponse = await axios.get(
+            `${backend_link}students/${studentId}`
+          );
+          return studentResponse.data;
+        });
+
+        // Resolve all promises to get the detailed student data
+        const table_data = await Promise.all(studentDataPromises);
+        setData(table_data);
+        console.log(table_data);
+      } else {
+        setData(session.data);
+        console.log(session.data);
+      }
+      // setData(table_data);
     } catch (err) {
       console.log("error: ", err);
       setData(["Error"]);
@@ -59,7 +70,7 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
     if (data) {
       fetchData();
     }
-  }, []);
+  }, [course, slot, type]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
@@ -78,10 +89,8 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
     setSearchTerm(e.target.value);
   };
 
-  // Check if `onSelectedRowsChange` or `onRowClick` is provided
-  const isSelectable = onSelectedRowsChange || onRowClick;
-
-  // Conditionally filter out "Select" header if not needed
+  const isSelectable =
+    type !== "sessions" && (onSelectedRowsChange || onRowClick);
   const filteredHeaders = isSelectable
     ? headers
     : headers.filter((header) => header !== "Select");
@@ -90,6 +99,16 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
     if (stickiness < 33) {
       return "low";
     } else if (stickiness < 66) {
+      return "medium";
+    } else {
+      return "high";
+    }
+  }
+
+  function getImprovementCategory(improvement) {
+    if (improvement < 0.4) {
+      return "low";
+    } else if (improvement < 0.7) {
       return "medium";
     } else {
       return "high";
@@ -143,11 +162,9 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
         <tbody>
           {data
             .filter((row) =>
-              row.studentName
-                ? row.studentName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
-                : true
+              (type === "students" ? row.studentName : row.sessionName)
+                ?.toLowerCase()
+                .includes(searchTerm.toLowerCase())
             )
             .map((row, rowIndex) => (
               <tr
@@ -158,23 +175,30 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
                   <td>
                     <input
                       type="checkbox"
-                      checked={selectedRows.includes(row.studentName)}
-                      onChange={() => handleCheckboxChange(row.studentName)}
+                      checked={selectedRows.includes(
+                        type === "students" ? row.studentName : row.sessionName
+                      )}
+                      onChange={() =>
+                        handleCheckboxChange(
+                          type === "students"
+                            ? row.studentName
+                            : row.sessionName
+                        )
+                      }
                     />
                   </td>
                 )}
                 <td>
-                  {/* Conditionally render Link for the Name column */}
-                  {onSelectedRowsChange || onRowClick ? (
-                    <Link
-                      to={`/student/${row.studentId}`}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      {row.studentName}
-                    </Link>
-                  ) : (
-                    row.studentName // If no onSelectedRowsChange or onRowClick, render just the name
-                  )}
+                  <Link
+                    to={
+                      type === "sessions"
+                        ? `/session/${row.sessionId}`
+                        : `/student/${row.studentId}`
+                    }
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {type === "students" ? row.studentName : row.sessionName}
+                  </Link>
                 </td>
                 <td>
                   {row.Metric ? (
@@ -190,7 +214,7 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
                 <td>
                   {row.Metric ? getPercentage(row.Metric.stickiness) : "N/A"}
                 </td>
-                <td>{row.Metric ? row.attendanceRate : "N/A"}</td>
+                <td>{row.Metric ? row.Metric.attendanceRate : "N/A"}</td>
                 <td>{row.Metric ? row.Metric.avgTimeSpent : "N/A"}</td>
                 <td>{row.Metric ? row.Metric.attendanceOver30Mins : "N/A"}</td>
                 <td>{row.Metric ? row.Metric.attendance : "N/A"}</td>
@@ -199,7 +223,8 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
                 </td>
                 <td>
                   {row.Metric ? (
-                    <Label text={row.Metric.improvement.toUpperCase()} />
+                    <Label text={getImprovementCategory(row.Metric.improvement).toUpperCase()} />
+                    // row.Metric.improvement
                   ) : (
                     "Loading..."
                   )}

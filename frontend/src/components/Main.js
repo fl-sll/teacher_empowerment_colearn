@@ -9,6 +9,7 @@ import Button from "./Button";
 import slider from "../assets/sliders-solid.svg";
 import Table from "./Table";
 import Popup from "./Popup";
+import DownloadButton from "./DownloadButton";
 import axios from "axios";
 import { backend_link } from "./CONST";
 
@@ -27,13 +28,12 @@ function Main() {
 
   const fetchCoursesData = async () => {
     try {
-      // Fetch class details
-      console.log("new")
       const classDataResponse = await axios.get(
         `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
       );
       const classData = classDataResponse.data;
-      console.log("test")
+      
+      // !! only enable if there are new data
       // Fetch sessions associated with the class
       // const sessionsResponse = await axios.get(
       //   `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
@@ -46,7 +46,6 @@ function Main() {
       //     axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
       //   )
       // );
-      console.log("test 2")
       // Calculate metrics for the class
       // await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
 
@@ -55,7 +54,6 @@ function Main() {
         `${backend_link}metrics/${classData.metricsId}`
       );
       const classMetrics = classMetricsResponse.data;
-      console.log("test 3")
       // Combine class data and metrics into the desired format
       // !! fix this
       const formattedData = {
@@ -164,7 +162,7 @@ function Main() {
 
   const handleSlotChange = (slot) => {
     setSelectedSlot(slot);
-    console.log("slot: ", selectedSlot);
+    // console.log("slot: ", selectedSlot);
     setSelectedRows([]);
   };
 
@@ -225,6 +223,7 @@ function Main() {
                   selectedCourse={selectedCourse} // Pass selected course
                   selectedSlot={selectedSlot} // Pass selected slot
                 />
+                {/* <DownloadButton data={courseData}/> */}
               </div>
             </div>
             <div className="button_details">
@@ -233,7 +232,6 @@ function Main() {
             </div>
             <div className="table_view">
               {activeTable === "students" && (
-                // <p>Students</p>
                 <Table
                   type="students"
                   course={selectedCourse}
@@ -243,14 +241,13 @@ function Main() {
                 />
               )}
               {activeTable === "sessions" && (
-                <p>Sessions</p>
-                // <Table
-                //   type="sessions"
-                //   course={selectedCourse}
-                //   slot={selectedSlot}
-                //   onSelectedRowsChange={handleSelectedRowsChange}
-                //   onRowClick={handleSessionClick}
-                // />
+                <Table
+                  type="sessions"
+                  course={selectedCourse}
+                  slot={selectedSlot}
+                  onSelectedRowsChange={handleSelectedRowsChange}
+                  onRowClick={handleSessionClick}
+                />
               )}
             </div>
           </>

@@ -8,6 +8,10 @@ const Session = sequelize.define('Session', {
         type: DataTypes.STRING,
         primaryKey: true
     },
+    sessionName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     classId: {
         type: DataTypes.STRING,
         references: {

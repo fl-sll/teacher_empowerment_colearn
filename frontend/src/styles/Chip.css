@@ -24,10 +24,10 @@
 }
 
 .chip_bottom {
-    /* background-color: var(--lightgreen); */
+    background-color: #FFF7C9;
     height: 20%;
     border-radius: 0px 0px 15px 15px;
-    color: white;
+    /* color: white; */
     display: flex;
     align-items: center;
 }
@@ -52,6 +52,11 @@
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 0;
+}
+
+.chip_data{
+    text-align: left;
+    font-size: 12px;
 }
 
 .chip_sub {

@@ -23,6 +23,10 @@ const Metrics = sequelize.define('Metrics', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
+    attendanceRate: {
+        type: DataTypes.FLOAT,
+        allowNull: true
+    },
     correctness: {
         type: DataTypes.FLOAT,
         allowNull: true

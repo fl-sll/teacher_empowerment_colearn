@@ -82,6 +82,32 @@ module.exports = app => {
 
     /**
      * @swagger
+     * /sessions/{sessionId}:
+     *   get:
+     *     summary: Get session by ID
+     *     tags: [Sessions]
+     *     parameters:
+     *       - in: path
+     *         name: sessionId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The session ID
+     *     responses:
+     *       200:
+     *         description: The session data
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Session'
+     *       404:
+     *         description: Session not found
+     *       500:
+     *         description: Internal server error
+     */
+
+    /**
+     * @swagger
      * /courses/{courseId}/classes/{classId}/sessions:
      *   post:
      *     summary: Create a new session
@@ -234,6 +260,7 @@ module.exports = app => {
 
     router.get('/courses/:courseId/classes/:classId/sessions', sessionController.getAllSessions);
     router.get('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.getSessionById);
+    router.get('/sessions/:sessionId', sessionController.getSessionById);
     router.post('/courses/:courseId/classes/:classId/sessions', sessionController.createSession);
     router.put('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.updateSession);
     router.delete('/courses/:courseId/classes/:classId/sessions/:sessionId', sessionController.deleteSession);

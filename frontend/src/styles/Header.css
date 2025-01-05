@@ -37,8 +37,27 @@ select {
 
 hr {
   border: 0;
-  height: 1px; 
+  height: 1px;
   background-color: #c3c3c3;
   width: 100%;
   margin: 20px 0;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  width: 20%;
+}
+
+.arrow-container{
+  margin-right: 5%;
+  /* padding-right: 10%; */
+}
+
+h3{
+  width: auto;
+}
+
+.date{
+  font-size: 14px;
 }

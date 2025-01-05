@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/SideBar.css";
 import colearn from "../assets/colearn_logo.png";
+import { Link } from "react-router-dom";
 
 function SideBar() {
   return (
@@ -8,7 +9,9 @@ function SideBar() {
       {/* <button>Engagement</button> */}
       {/* <button>test</button> */}
       {/* <img src={sidebar} alt="sidebar" className="cropped-image" /> */}
-      <img src={colearn} alt="colearn logo" className="colearn_logo"/>
+      <Link to={`/`}>
+        <img src={colearn} alt="colearn logo" className="colearn_logo"/>
+      </Link>
       Engagement Dashboard
     </div>
   );

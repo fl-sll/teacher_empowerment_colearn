@@ -66,6 +66,10 @@ const options = {
               type: "string",
               description: "The session ID",
             },
+            sessionName: {
+              type: "string",
+              description: "The session name",
+            },
             classId: {
               type: "string",
               description: "The ID of the class this session belongs to",
@@ -133,6 +137,7 @@ const options = {
             "avgTimeSpent",
             "attendanceOver30Mins",
             "attendance",
+            "attendanceRate",
             "correctness",
             "improvement",
           ],
@@ -161,6 +166,11 @@ const options = {
             attendance: {
               type: "integer",
               description: "The attendance count",
+            },
+            attendanceRate: {
+              type: "number",
+              format: "float",
+              description: "The attendance rate",
             },
             correctness: {
               type: "number",

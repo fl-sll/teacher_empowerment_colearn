@@ -25,7 +25,7 @@ exports.getSessionById = async (req, res) => {
   try {
     const session = await Session.findOne({
       where: {
-        classId: req.params.classId,
+        // classId: req.params.classId,
         sessionId: req.params.sessionId,
       },
       include: [
@@ -38,7 +38,7 @@ exports.getSessionById = async (req, res) => {
       res.send(session);
     } else {
       res.status(404).send({
-        message: "Session not found with the specified classId and sessionId",
+        message: "Session not found with the specified and sessionId",
       });
     }
   } catch (err) {
