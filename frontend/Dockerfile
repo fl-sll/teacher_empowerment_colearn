@@ -10,9 +10,6 @@ RUN npm install
 # Copy the rest of the app
 COPY . .
 
-ARG ENV_FILE=.env
-COPY ${ENV_FILE} /app/.env
-
 EXPOSE 3000
 
 CMD ["npm", "start"]
