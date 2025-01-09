@@ -26,8 +26,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Copy built frontend files to Nginx's web root
-COPY --from=frontend /frontend/dist /usr/share/nginx/html
-
+COPY --from=frontend /frontend/build /usr/share/nginx/html
 # Expose the ports
 EXPOSE 80
 EXPOSE 8080
