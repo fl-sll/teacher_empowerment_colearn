@@ -1,1 +1,1 @@
-export const backend_link = "teacherempowermentcolearn-production.up.railway.app/api/";
+export const backend_link = "https://teacherempowermentcolearn-production.up.railway.app/api/";
