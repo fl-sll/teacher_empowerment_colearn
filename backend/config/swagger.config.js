@@ -13,7 +13,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${port}/api`,
+        url: `https://teacherempowermentcolearn-production.up.railway.app:${port}/api`,
       },
     ],
     components: {
