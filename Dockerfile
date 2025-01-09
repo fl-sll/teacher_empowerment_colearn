@@ -5,8 +5,6 @@ WORKDIR /frontend
 COPY ./frontend/package.json ./frontend/package-lock.json ./
 RUN npm install
 COPY ./frontend ./
-ARG ENV_FILE=.env
-COPY ${ENV_FILE} /frontend/.env
 RUN npm run build
 
 # Stage 2: Prepare the Backend
