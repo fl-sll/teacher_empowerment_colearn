@@ -18,16 +18,13 @@ function StudentPage({ props }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
   const [tableData, setTableData] = useState();
-  const { studentId } = useParams();
+  const { courseId, slotId, studentId } = useParams();
   const [studentName, setStudentName] = useState();
-
   const fetchData = async () => {
     try {
       console.log(studentId);
       // get student name
-      const name = await axios.get(
-        `${backend_link}students/${studentId}`
-      );
+      const name = await axios.get(`${backend_link}students/${studentId}`);
 
       setStudentName(name.data.studentName);
       console.log(studentName);
@@ -147,10 +144,10 @@ function StudentPage({ props }) {
         {/* new header here */}
         {/* <Breadcrumbs name={studentName} /> */}
         {studentName ? (
-          <Breadcrumbs name={studentName} />
-            ) : (
-              <p>Loading data...</p>
-            )}
+          <Breadcrumbs name={studentName} courseId={courseId} slotId={slotId}/>
+        ) : (
+          <p>Loading data...</p>
+        )}
         <>
           <div className="chips">
             {categories
@@ -182,10 +179,13 @@ function StudentPage({ props }) {
                   selectedSlot={selectedSlot} // Pass selected slot
                 /> */}
               {tableData ? (
-              <DownloadButton data={tableData} name={`${studentId}-${studentName}`}/>
-            ) : (
-              <p>Loading data...</p>
-            )}
+                <DownloadButton
+                  data={tableData}
+                  name={`${studentId}-${studentName}`}
+                />
+              ) : (
+                <p>Loading data...</p>
+              )}
             </div>
           </div>
           <div className="table_view">

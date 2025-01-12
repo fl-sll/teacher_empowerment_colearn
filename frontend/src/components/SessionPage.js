@@ -16,7 +16,7 @@ function SessionPage({ props }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
   const [tableData, setTableData] = useState();
-  const { sessionId } = useParams();
+  const { courseId, slotId, sessionId } = useParams();
   const [sessionName, setSessionName] = useState();
 
   const fetchData = async () => {
@@ -141,7 +141,7 @@ function SessionPage({ props }) {
         {/* new header here */}
         {/* <Breadcrumbs name={studentName} /> */}
         {sessionName ? (
-          <Breadcrumbs name={sessionName} />
+          <Breadcrumbs name={sessionName} courseId={courseId} slotId={slotId}/>
         ) : (
           <p>Loading data...</p>
         )}

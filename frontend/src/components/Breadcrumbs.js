@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Header.css";
+import axios from "axios";
+import { backend_link } from "./CONST";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-function Breadcrumbs({ type, name }) {
+function Breadcrumbs({ type, name, courseId, slotId }) {
   const navigate = useNavigate();
+  const [course, setCourse] = useState("");
+  const [slot, setSlot] = useState("");
+
+  const fetchData = async () => {
+    try {
+      const course_data = await axios.get(`${backend_link}courses/${courseId}`);
+      const slot_data = await axios.get(
+        `${backend_link}courses/${courseId}/classes/${slotId}`
+      );
+      console.log(course_data);
+      console.log(course_data.data.courseName);
+      setCourse(course_data.data.courseName);
+      setSlot(slot_data.data.className);
+    } catch (err) {
+      console.log("error: ", err);
+      setCourse("Course error");
+      setSlot("Slot error");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const currentDate = new Date().toLocaleDateString("en-GB", {
     day: "numeric",
@@ -14,11 +39,15 @@ function Breadcrumbs({ type, name }) {
   });
 
   // Determine the header title based on the type prop
-  const engagementTitle = type === "session" ? "Session Engagement" : "Student Engagement";
+  const engagementTitle =
+    type === "session" ? "Session Engagement" : "Student Engagement";
 
   return (
     <div className="header-container">
       <h2>{engagementTitle}</h2>
+      <p>
+        {course} <strong>/</strong> {slot} <strong>/</strong> {name}
+      </p>
       <div className="back">
         <div
           className="arrow-container"

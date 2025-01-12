@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Main />} />
-        <Route path="/student/:studentId" element={<StudentPage />} />
-        <Route path="/session/:sessionId" element={<SessionPage />} />
+        <Route path="/student/:courseId/:slotId/:studentId" element={<StudentPage />} />
+        <Route path="/session/:courseId/:slotId/:sessionId" element={<SessionPage />} />
       </Routes>
     </Router>
   );

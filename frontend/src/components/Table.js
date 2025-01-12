@@ -192,8 +192,8 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
                   <Link
                     to={
                       type === "sessions"
-                        ? `/session/${row.sessionId}`
-                        : `/student/${row.studentId}`
+                        ? `/session/${course}/${slot}/${row.sessionId}`
+                        : `/student/${course}/${slot}/${row.studentId}`
                     }
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
