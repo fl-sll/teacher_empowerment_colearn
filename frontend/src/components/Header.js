@@ -76,7 +76,7 @@ function Header({ onCourseChange, onSlotChange }) {
             id="course"
             value={selectedCourse}
             onChange={handleCourseChange}
-            className="dropdown"
+            className="dropdown_header"
           >
             <option value="">Select a course</option>
             {courseOptions.map((course, index) => (
@@ -93,7 +93,7 @@ function Header({ onCourseChange, onSlotChange }) {
             id="slot"
             value={selectedSlot}
             onChange={handleSlotChange}
-            className="dropdown"
+            className="dropdown_header"
             disabled={!selectedCourse} // Disable dropdown until a course is selected
           >
             <option value="">Select a slot</option>

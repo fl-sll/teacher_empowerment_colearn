@@ -25,6 +25,8 @@ function Main() {
   // const [studentData, setStudentData] = useState([]);
   // const [sessionData, setSessionData] = useState([]);
   const [courseData, setCourseData] = useState([]);
+  const [course, setCourse] = useState();
+  const [tableData, setTableData] = useState([]);
 
   const fetchCoursesData = async () => {
     try {
@@ -32,22 +34,22 @@ function Main() {
         `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
       );
       const classData = classDataResponse.data;
-      
+
       // !! only enable if there are new data
       // Fetch sessions associated with the class
-      // const sessionsResponse = await axios.get(
-      //   `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
-      // );
-      // const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
+      const sessionsResponse = await axios.get(
+        `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
+      );
+      const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
 
       // Renew metrics for each session
-      // await Promise.all(
-      //   sessionIds.map((sessionId) =>
-      //     axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
-      //   )
-      // );
+      await Promise.all(
+        sessionIds.map((sessionId) =>
+          axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
+        )
+      );
       // Calculate metrics for the class
-      // await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
+      await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
 
       // Fetch metrics data for the class
       const classMetricsResponse = await axios.get(
@@ -75,7 +77,9 @@ function Main() {
         // improvement: formatImprovement(classMetrics.improvement),
       };
       console.log("Formatted Data: ", formattedData);
+
       setCourseData(formattedData); // Update state with formatted data
+      // setCourse([formattedData]);
     } catch (err) {
       console.error("Error: ", err);
       setCourseData(["Error"]); // Set error state
@@ -83,8 +87,9 @@ function Main() {
   };
 
   useEffect(() => {
-    if(selectedSlot){
-    fetchCoursesData();}
+    if (selectedSlot) {
+      fetchCoursesData();
+    }
   }, [selectedSlot]);
 
   const categories = [
@@ -176,6 +181,10 @@ function Main() {
     setSelectedStudent(null);
   };
 
+  const handleTableDataUpdate = (data) => {
+    setTableData(data); // Update the table data
+  };
+
   return (
     <div className="Main">
       <div className="sidebar">
@@ -223,7 +232,10 @@ function Main() {
                   selectedCourse={selectedCourse} // Pass selected course
                   selectedSlot={selectedSlot} // Pass selected slot
                 />
-                {/* <DownloadButton data={courseData} name={`${selectedCourse}-${selectedSlot}`}/> */}
+                <DownloadButton
+                  data={tableData}
+                  name={`${selectedCourse}-${selectedSlot}`}
+                />
               </div>
             </div>
             <div className="button_details">
@@ -238,6 +250,7 @@ function Main() {
                   slot={selectedSlot}
                   onSelectedRowsChange={handleSelectedRowsChange}
                   onRowClick={handleStudentClick}
+                  onDataUpdate={handleTableDataUpdate}
                 />
               )}
               {activeTable === "sessions" && (
@@ -247,6 +260,7 @@ function Main() {
                   slot={selectedSlot}
                   onSelectedRowsChange={handleSelectedRowsChange}
                   onRowClick={handleSessionClick}
+                  onDataUpdate={handleTableDataUpdate}
                 />
               )}
             </div>

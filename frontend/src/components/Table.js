@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { backend_link } from "./CONST";
 import axios from "axios";
 
-const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
+const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpdate}) => {
   const headers = [
     "Select",
     "Name",
@@ -53,11 +53,44 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick }) => {
 
         // Resolve all promises to get the detailed student data
         const table_data = await Promise.all(studentDataPromises);
-        setData(table_data);
-        console.log(table_data);
+        const cleanedData = table_data.map((item) => ({
+          studentId: item.studentId,
+          studentName: item.studentName,
+          metricsId: item.metricsId,
+          Metric: {
+              metricsId: item.Metric.metricsId,
+              stickiness: item.Metric.stickiness,
+              avgTimeSpent: item.Metric.avgTimeSpent,
+              attendanceOver30Mins: item.Metric.attendanceOver30Mins,
+              attendance: item.Metric.attendance,
+              attendanceRate: item.Metric.attendanceRate,
+              correctness: item.Metric.correctness,
+              improvement: item.Metric.improvement
+          }
+        }));
+        setData(cleanedData);
+        // console.log("clean", cleanedData);
+        // console.log("table", table_data);
+        onDataUpdate && onDataUpdate(cleanedData);
       } else {
-        setData(session.data);
-        console.log(session.data);
+        const cleanedData = session.data.map((item) => ({
+          sessionId: item.sessionId,
+          sessionName: item.sessionName,
+          metricsId: item.metricsId,
+          Metric: {
+              metricsId: item.Metric.metricsId,
+              stickiness: item.Metric.stickiness,
+              avgTimeSpent: item.Metric.avgTimeSpent,
+              attendanceOver30Mins: item.Metric.attendanceOver30Mins,
+              attendance: item.Metric.attendance,
+              attendanceRate: item.Metric.attendanceRate,
+              correctness: item.Metric.correctness,
+              improvement: item.Metric.improvement
+          }
+        }));
+        setData(cleanedData);
+        // console.log(session.data);
+        onDataUpdate && onDataUpdate(cleanedData);
       }
       // setData(table_data);
     } catch (err) {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "./Button";
 import download from "../assets/file-arrow-down-solid.svg";
 import * as XLSX from "xlsx";
+import "../styles/Button.css"
 
 function DownloadButton({ data, name }) {
   const [fileType, setFileType] = useState("csv");
@@ -76,11 +77,11 @@ function DownloadButton({ data, name }) {
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div className="download_container">
       <select
         value={fileType}
         onChange={(e) => setFileType(e.target.value)}
-        style={{ padding: "5px" }}
+        className="dropdown"
       >
         <option value="csv">CSV</option>
         <option value="xlsx">XLSX</option>
