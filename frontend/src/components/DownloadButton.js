@@ -2,27 +2,29 @@ import React, { useState } from "react";
 import Button from "./Button";
 import download from "../assets/file-arrow-down-solid.svg";
 import * as XLSX from "xlsx";
-import "../styles/Button.css"
+import "../styles/Button.css";
 
 function DownloadButton({ data, name }) {
   const [fileType, setFileType] = useState("csv");
 
+  // Function to flatten objects
+  function flattenObject(obj, parentKey = "", result = {}) {
+    for (const [key, value] of Object.entries(obj)) {
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        flattenObject(value, newKey, result);
+      } else {
+        result[newKey] = value;
+      }
+    }
+    return result;
+  }
+
+  // Convert JSON to CSV
   function jsonToCSV(jsonData) {
     if (!Array.isArray(jsonData) || jsonData.length === 0) {
       console.error("Data must be a non-empty array");
       return "";
-    }
-
-    function flattenObject(obj, parentKey = "", result = {}) {
-      for (const [key, value] of Object.entries(obj)) {
-        const newKey = parentKey ? `${parentKey}.${key}` : key;
-        if (value && typeof value === "object" && !Array.isArray(value)) {
-          flattenObject(value, newKey, result);
-        } else {
-          result[newKey] = value;
-        }
-      }
-      return result;
     }
 
     const flattenedData = jsonData.map((item) => flattenObject(item));
@@ -39,6 +41,7 @@ function DownloadButton({ data, name }) {
     return csvContent;
   }
 
+  // Download CSV
   function downloadCSV(jsonData, filename) {
     const csvContent = jsonToCSV(jsonData);
     if (!csvContent) {
@@ -54,13 +57,23 @@ function DownloadButton({ data, name }) {
     URL.revokeObjectURL(link.href);
   }
 
+  // Download XLSX
   function downloadXLSX(jsonData, filename) {
-    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+    if (!Array.isArray(jsonData) || jsonData.length === 0) {
+      console.error("Data must be a non-empty array");
+      return;
+    }
+
+    // Flatten each object in the dataset
+    const flattenedData = jsonData.map((item) => flattenObject(item));
+
+    const worksheet = XLSX.utils.json_to_sheet(flattenedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, `${filename}.xlsx`);
   }
 
+  // Handle file download
   function handleDownload() {
     if (!data || !name) {
       console.error("Invalid data or filename");
