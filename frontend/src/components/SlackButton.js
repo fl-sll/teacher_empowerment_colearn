@@ -4,7 +4,7 @@ import slack from "../assets/slack-brands-solid.svg"
 import logo from "../assets/slack_logo.png";
 
 function SlackButton({ selectedRows, onSendData, selectedCourse, selectedSlot }) {
-  const webhookUrl = process.env.REACT_APP_BACKEND;
+  const webhookUrl = process.env.REACT_APP_SLACK;
 
   const handleSendData = async () => {
     await sendToSlack(selectedRows);

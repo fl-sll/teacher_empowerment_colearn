@@ -1,17 +1,17 @@
-import React from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
 import Button from "./Button";
 import download from "../assets/file-arrow-down-solid.svg";
+import * as XLSX from "xlsx";
 
 function DownloadButton({ data, name }) {
+  const [fileType, setFileType] = useState("csv");
+
   function jsonToCSV(jsonData) {
     if (!Array.isArray(jsonData) || jsonData.length === 0) {
       console.error("Data must be a non-empty array");
       return "";
     }
 
-    // Helper function to flatten nested JSON
     function flattenObject(obj, parentKey = "", result = {}) {
       for (const [key, value] of Object.entries(obj)) {
         const newKey = parentKey ? `${parentKey}.${key}` : key;
@@ -24,25 +24,20 @@ function DownloadButton({ data, name }) {
       return result;
     }
 
-    // Flatten all objects in the array
     const flattenedData = jsonData.map((item) => flattenObject(item));
-
-    // Extract headers dynamically
     const headers = Array.from(new Set(flattenedData.flatMap(Object.keys)));
 
-    // Build CSV content
     const csvContent = [
-      headers.join(","), // Header row
+      headers.join(","), 
       ...flattenedData.map(
         (row) =>
-          headers.map((header) => JSON.stringify(row[header] ?? "")).join(",") // Data rows
+          headers.map((header) => JSON.stringify(row[header] ?? "")).join(",")
       ),
     ].join("\n");
 
     return csvContent;
   }
 
-  // Function to download data as a CSV file
   function downloadCSV(jsonData, filename) {
     const csvContent = jsonToCSV(jsonData);
     if (!csvContent) {
@@ -50,36 +45,53 @@ function DownloadButton({ data, name }) {
       return;
     }
 
-    // Create a Blob from the CSV content
     const blob = new Blob([csvContent], { type: "text/csv" });
-
-    // Create a link to download the Blob
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = filename;
-
-    // Trigger the download
+    link.download = `${filename}.csv`;
     link.click();
-
-    // Clean up
     URL.revokeObjectURL(link.href);
   }
 
+  function downloadXLSX(jsonData, filename) {
+    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, `${filename}.xlsx`);
+  }
+
+  function handleDownload() {
+    if (!data || !name) {
+      console.error("Invalid data or filename");
+      return;
+    }
+
+    if (fileType === "csv") {
+      downloadCSV(data, name);
+    } else if (fileType === "xlsx") {
+      downloadXLSX(data, name);
+    } else {
+      console.error("Unsupported file type");
+    }
+  }
+
   return (
-    // <button
-    //   className="custom_button slack"
-    //   style={{ padding: "10px 20px", fontSize: "16px" }}
-    //   onClick={() => downloadCSV(data, name)}
-    // >
-    // <FontAwesomeIcon icon={faDownload} />
-    //   Download Data
-    // </button>
-    <Button
-      label={"Download"}
-      logo={download}
-      border={"customize"}
-      action={() => downloadCSV(data, name)}
-    />
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <select
+        value={fileType}
+        onChange={(e) => setFileType(e.target.value)}
+        style={{ padding: "5px" }}
+      >
+        <option value="csv">CSV</option>
+        <option value="xlsx">XLSX</option>
+      </select>
+      <Button
+        label={"Download"}
+        logo={download}
+        border={"customize"}
+        action={handleDownload}
+      />
+    </div>
   );
 }
 

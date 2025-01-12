@@ -10,7 +10,7 @@ const port = process.env.BE_PORT;
 // console.log(port);
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 
 // Swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
