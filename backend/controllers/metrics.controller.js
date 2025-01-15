@@ -76,7 +76,7 @@ exports.calculateStudent = async (req, res) => {
         message: `No session students found for studentId: ${studentId}`,
       });
     }
-
+    
     // Calculate the averages of pretest, posttest, and metricsId for the student
     const totalPretest = sessionStudents.reduce(
       (sum, entry) => sum + entry.pretest,
@@ -126,6 +126,10 @@ exports.calculateStudent = async (req, res) => {
       (sum, entry) => sum + entry.attendanceRate,
       0
     );
+    const totalImprovementRate = metricsEntries.reduce(
+      (sum, entry) => sum + entry.improvement,
+      0
+    );
 
     const avgStickiness = totalStickiness / metricsEntries.length;
     const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
@@ -133,6 +137,8 @@ exports.calculateStudent = async (req, res) => {
     const avgAttendance = totalAttendance / metricsEntries.length;
     const avgCorrectness = totalCorrectness / metricsEntries.length;
     const avgAttendanceRate = totalAttendanceRate / metricsEntries.length;
+    const avgImprovementRate = totalImprovementRate / metricsEntries.length;
+
 
     if (student.metricsId) {
       // If the student already has a metricsId, update the existing metrics entry
@@ -151,7 +157,7 @@ exports.calculateStudent = async (req, res) => {
           attendance: avgAttendance,
           attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
-          improvement: "no improvement",
+          improvement: avgImprovementRate,
           studentId: studentId,
         });
 
@@ -180,7 +186,7 @@ exports.calculateStudent = async (req, res) => {
         attendance: 0,
         attendanceRate: 0,
         correctness: 0,
-        improvement: "no improvement", // Add improvement logic if needed
+        improvement: 0,
         studentId: studentId,
       });
 
@@ -194,7 +200,7 @@ exports.calculateStudent = async (req, res) => {
         attendance: avgAttendance,
         attendanceRate: avgAttendanceRate,
         correctness: avgCorrectness,
-        improvement: "no improvement",
+        improvement: avgImprovementRate,
         studentId: studentId,
       });
 
@@ -288,6 +294,11 @@ exports.calculateSession = async (req, res) => {
       (sum, entry) => sum + entry.attendanceRate,
       0
     );
+    const totalImprovementRate = metricsEntries.reduce(
+      (sum, entry) => sum + entry.improvement,
+      0
+    );
+    const avgImprovementRate = totalImprovementRate / metricsEntries.length;
 
     const avgStickiness = totalStickiness / metricsEntries.length;
     const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
@@ -315,7 +326,7 @@ exports.calculateSession = async (req, res) => {
           attendance: avgAttendance,
           attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
-          improvement: "no improvement",
+          improvement: avgImprovementRate,
           sessionId: sessionId,
         });
 
@@ -344,7 +355,7 @@ exports.calculateSession = async (req, res) => {
         attendance: 0,
         attendanceRate: 0,
         correctness: 0,
-        improvement: "no improvement", // Add improvement logic if needed
+        improvement: 0, // Add improvement logic if needed
         sessionId: sessionId,
       });
 
@@ -358,7 +369,7 @@ exports.calculateSession = async (req, res) => {
         attendance: avgAttendance,
         attendanceRate: avgAttendanceRate,
         correctness: avgCorrectness,
-        improvement: "no improvement",
+        improvement: avgImprovementRate,
         sessionId: sessionId,
       });
 
@@ -439,6 +450,11 @@ exports.calculateClass = async (req, res) => {
       (sum, entry) => sum + entry.attendanceRate,
       0
     );
+    const totalImprovementRate = metricsEntries.reduce(
+      (sum, entry) => sum + entry.improvement,
+      0
+    );
+    const avgImprovementRate = totalImprovementRate / metricsEntries.length;
 
     const avgStickiness = totalStickiness / metricsEntries.length;
     const avgAvgTimeSpent = totalAvgTimeSpent / metricsEntries.length;
@@ -464,7 +480,7 @@ exports.calculateClass = async (req, res) => {
           attendance: avgAttendance,
           attendanceRate: avgAttendanceRate,
           correctness: avgCorrectness,
-          improvement: "no improvement", // Add improvement logic if needed
+          improvement: avgImprovementRate, // Add improvement logic if needed
           classId: classId,
         });
 
@@ -491,7 +507,7 @@ exports.calculateClass = async (req, res) => {
         attendance: 0,
         attendanceRate: 0,
         correctness: 0,
-        improvement: "no improvement", // Add improvement logic if needed
+        improvement: 0, // Add improvement logic if needed
         classId: classId,
       });
 
@@ -503,7 +519,7 @@ exports.calculateClass = async (req, res) => {
         attendance: avgAttendance,
         attendanceRate: avgAttendanceRate,
         correctness: avgCorrectness,
-        improvement: "no improvement",
+        improvement: avgImprovementRate,
         classId: classId,
       });
 
@@ -520,5 +536,19 @@ exports.calculateClass = async (req, res) => {
     return res
       .status(500)
       .json({ message: `Error processing request for classId: ${classId}` });
+  }
+};
+
+exports.calculateSessionStudentsImprovement = async (req, res) => {
+  const { metricsId } = req.params;
+  try {
+    const metrics = await Metrics.findByPk(metricsId);
+    if (!metrics) {
+      return res.status(404).json({ message: "Metrics not found" });
+    }
+    await metrics.update(req.body);
+    res.status(200).json(metrics);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

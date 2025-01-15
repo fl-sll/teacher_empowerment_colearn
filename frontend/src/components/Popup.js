@@ -37,6 +37,7 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
     { id: 4, name: "30 mins Attendance" },
     { id: 5, name: "Attendance Count" },
     { id: 6, name: "Correctness" },
+    { id: 7, name: "Improvement" },
   ];
 
   return (

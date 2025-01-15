@@ -144,7 +144,12 @@ module.exports = (app) => {
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/SessionStudent'
+     *              type: object
+     *              properties:
+     *                  posttest:
+     *                      type: number
+     *                  pretest:
+     *                      type: number
      *     responses:
      *       200:
      *         description: The updated session student

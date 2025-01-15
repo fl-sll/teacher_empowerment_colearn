@@ -32,7 +32,7 @@ const Metrics = sequelize.define('Metrics', {
         allowNull: true
     },
     improvement: {
-        type: DataTypes.STRING,
+        type: DataTypes.FLOAT,
         allowNull: true
     },
 });

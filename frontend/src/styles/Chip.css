@@ -54,7 +54,7 @@
     margin-bottom: 0;
 }
 
-.chip_data{
+.chip_data {
     text-align: left;
     font-size: 12px;
 }
@@ -86,16 +86,31 @@
 }
 
 .high {
-    background-color: rgba(63, 143, 116, 0.3);
-    color: #3F8F74;
+    background-color: rgba(174, 81, 255, 0.3);
+    color: #c441e5;
 }
 
 .medium {
-    background-color: rgba(230, 100, 32, 0.3);
-    color: #E66420;
+    background-color: rgba(0, 255, 17, 0.416);
+    color: #66ab00;
 }
 
 .low {
-    background-color: rgba(163, 13, 17, 0.3);
+    background-color: rgba(255, 162, 0, 0.3);
+    color: #8a5c00;
+}
+
+.decrease {
+    background-color: rgba(230, 0, 8, 0.3);
     color: #A30D11;
+}
+
+.none {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.improvement {
+    background-color: rgba(0, 255, 17, 0.416);
+    color: #325300;
 }

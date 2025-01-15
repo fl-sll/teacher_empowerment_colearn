@@ -16,7 +16,7 @@ import { backend_link } from "./CONST";
 function Main() {
   const [activeTable, setActiveTable] = useState("students");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
+  const [selectedCategories, setSelectedCategories] = useState([1, 4, 7]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(""); // Course selected state
   const [selectedSlot, setSelectedSlot] = useState(""); // Slot selected state
@@ -54,6 +54,7 @@ function Main() {
         `${backend_link}metrics/${classData.metricsId}`
       );
       const classMetrics = classMetricsResponse.data;
+      console.log(classMetrics)
 
       // format metrics data
       const formattedData = {
@@ -71,6 +72,7 @@ function Main() {
         ).toFixed(1),
         attendanceCount: classMetrics.attendance,
         correctness: (classMetrics.correctness * 100).toFixed(0),
+        improvement: classMetrics.improvement,
       };
 
       // set data
@@ -123,6 +125,12 @@ function Main() {
       title: "Correctness",
       sub: "Class performance from tests",
       number: courseData.correctness ||"...",
+    },
+    {
+      id: 7,
+      title: "Improvement",
+      sub: "Avg. student improvement",
+      number: courseData.improvement ||"...",
     },
   ];
 

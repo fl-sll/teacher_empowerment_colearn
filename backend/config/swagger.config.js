@@ -13,8 +13,8 @@ const options = {
     },
     servers: [
       {
-        url: `https://colearn-production.up.railway.app/api`,
-        // url: `http://localhost/api`,
+        // url: `https://colearn-production.up.railway.app/api`,
+        url: `http://localhost/api`,
       },
     ],
     components: {
@@ -179,7 +179,8 @@ const options = {
               description: "The correctness metrics",
             },
             improvement: {
-              type: "string",
+              type: "number",
+              format: "float",
               description:
                 "The improvement metrics as a qualitative descriptor",
             },

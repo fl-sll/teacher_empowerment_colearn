@@ -42,9 +42,9 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
         // get all students based on the student id array
         const studentDataPromises = student_ids.map(async (studentId) => {
           // !! only enable if there are new data
-          // await axios.put(
-          //   `${backend_link}metrics/calculate/student/${studentId}`
-          // );
+          await axios.put(
+            `${backend_link}metrics/calculate/student/${studentId}`
+          );
           const studentResponse = await axios.get(
             `${backend_link}students/${studentId}`
           );
@@ -89,7 +89,7 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
           }
         }));
         setData(cleanedData);
-        // console.log(session.data);
+        console.log(data)
         onDataUpdate && onDataUpdate(cleanedData);
       }
       // setData(table_data);
@@ -129,7 +129,7 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
     : headers.filter((header) => header !== "Select");
 
   function getStickinessCategory(stickiness) {
-    if (stickiness < 33) {
+    if (stickiness < 30) {
       return "low";
     } else if (stickiness < 66) {
       return "medium";
@@ -139,14 +139,28 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
   }
 
   function getImprovementCategory(improvement) {
-    if (improvement < 0.4) {
-      return "low";
-    } else if (improvement < 0.7) {
-      return "medium";
+    if (improvement < 0) {
+      return "decrease";
+    } else if (improvement === 0) {
+      return "none";
     } else {
-      return "high";
+      return "improvement";
     }
   }
+
+  // function getImprovementCategory(improvement) {
+  //   if (improvement < 0) {
+  //     return "decrease";
+  //   } else if (improvement === 0) {
+  //     return "none";
+  //   } else if (improvement <0.3) {
+  //     return "low";
+  //   } else if (improvement < 0.6) {
+  //     return "medium";
+  //   } else {
+  //     return "high";
+  //   }
+  // }
 
   function getPercentage(value) {
     return value * 100;

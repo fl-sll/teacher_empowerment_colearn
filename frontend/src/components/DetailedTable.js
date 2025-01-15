@@ -25,9 +25,9 @@ const DetailedTable = ({ type, data }) => {
   };
 
   function getStickinessCategory(stickiness) {
-    if (stickiness < 33) {
+    if (stickiness < 30) {
       return "low";
-    } else if (stickiness < 66) {
+    } else if (stickiness < 60) {
       return "medium";
     } else {
       return "high";
@@ -35,14 +35,28 @@ const DetailedTable = ({ type, data }) => {
   }
 
   function getImprovementCategory(improvement) {
-    if (improvement < 0.4) {
-      return "low";
-    } else if (improvement < 0.7) {
-      return "medium";
+    if (improvement < 0) {
+      return "decrease";
+    } else if (improvement === 0) {
+      return "none";
     } else {
-      return "high";
+      return "improvement";
     }
   }
+
+  // function getImprovementCategory(improvement) {
+  //   if (improvement < 0) {
+  //     return "decrease";
+  //   } else if (improvement === 0) {
+  //     return "none";
+  //   } else if (improvement < 0.3) {
+  //     return "low";
+  //   } else if (improvement < 0.6) {
+  //     return "medium";
+  //   } else {
+  //     return "high";
+  //   }
+  // }
 
   function getPercentage(value) {
     return value * 100;
