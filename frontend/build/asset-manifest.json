@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.3770a5b5.css",
-    "main.js": "/static/js/main.6436c6ca.js",
+    "main.css": "/static/css/main.b4273e42.css",
+    "main.js": "/static/js/main.df7a9693.js",
     "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
     "static/media/slack_logo.png": "/static/media/slack_logo.566a720fce6f2901700a.png",
     "static/media/colearn_logo.png": "/static/media/colearn_logo.f789bbfb8f140707ab97.png",
@@ -10,12 +10,12 @@
     "static/media/sliders-solid.svg": "/static/media/sliders-solid.84b7226b6c59c8c1825713703b4a4209.svg",
     "index.html": "/index.html",
     "static/media/file-arrow-down-solid.svg": "/static/media/file-arrow-down-solid.6568b05d4a5cd615ffcb05c53901d11a.svg",
-    "main.3770a5b5.css.map": "/static/css/main.3770a5b5.css.map",
-    "main.6436c6ca.js.map": "/static/js/main.6436c6ca.js.map",
+    "main.b4273e42.css.map": "/static/css/main.b4273e42.css.map",
+    "main.df7a9693.js.map": "/static/js/main.df7a9693.js.map",
     "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3770a5b5.css",
-    "static/js/main.6436c6ca.js"
+    "static/css/main.b4273e42.css",
+    "static/js/main.df7a9693.js"
   ]
 }

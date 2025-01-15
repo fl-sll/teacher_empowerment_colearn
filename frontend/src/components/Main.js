@@ -22,46 +22,43 @@ function Main() {
   const [selectedSlot, setSelectedSlot] = useState(""); // Slot selected state
   const [selectedStudent, setSelectedStudent] = useState(null); // For storing selected student data
   const [selectedSession, setSelectedSession] = useState(null); // For storing selected session data
-  // const [studentData, setStudentData] = useState([]);
-  // const [sessionData, setSessionData] = useState([]);
-  const [courseData, setCourseData] = useState([]);
-  const [course, setCourse] = useState();
+  const [courseData, setCourseData] = useState({});
   const [tableData, setTableData] = useState([]);
 
   const fetchCoursesData = async () => {
     try {
+      // get slot data
       const classDataResponse = await axios.get(
         `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}`
       );
       const classData = classDataResponse.data;
 
-      // !! only enable if there are new data
-      // Fetch sessions associated with the class
+      // get sessions from the slot
       const sessionsResponse = await axios.get(
         `${backend_link}courses/${selectedCourse}/classes/${selectedSlot}/sessions`
       );
+      // get session id
       const sessionIds = sessionsResponse.data.map((item) => item.sessionId);
 
-      // Renew metrics for each session
+      // run calculation on all session, update the metrics
       await Promise.all(
         sessionIds.map((sessionId) =>
           axios.put(`${backend_link}metrics/calculate/session/${sessionId}`)
         )
       );
-      // Calculate metrics for the class
+      // update the slot metrics
       await axios.put(`${backend_link}metrics/calculate/class/${selectedSlot}`);
 
-      // Fetch metrics data for the class
+      // get slot metrics data
       const classMetricsResponse = await axios.get(
         `${backend_link}metrics/${classData.metricsId}`
       );
       const classMetrics = classMetricsResponse.data;
-      // Combine class data and metrics into the desired format
-      // !! fix this
+
+      // format metrics data
       const formattedData = {
         courseId: classData.courseId,
         courseName: classData.className,
-        // stickiness: formatStickiness(classMetrics.stickiness),
         percentageStickiness: (classMetrics.stickiness * 100).toFixed(1),
         attendanceRate: (
           (classMetrics.attendance / classMetrics.attendanceOver30Mins) *
@@ -74,12 +71,10 @@ function Main() {
         ).toFixed(1),
         attendanceCount: classMetrics.attendance,
         correctness: (classMetrics.correctness * 100).toFixed(0),
-        // improvement: formatImprovement(classMetrics.improvement),
       };
-      console.log("Formatted Data: ", formattedData);
 
+      // set data
       setCourseData(formattedData); // Update state with formatted data
-      // setCourse([formattedData]);
     } catch (err) {
       console.error("Error: ", err);
       setCourseData(["Error"]); // Set error state
@@ -87,53 +82,47 @@ function Main() {
   };
 
   useEffect(() => {
-    if (selectedSlot) {
+    if (selectedSlot && selectedCourse) {
       fetchCoursesData();
     }
-  }, [selectedSlot]);
+  }, [selectedSlot, selectedCourse]);
 
   const categories = [
     {
       id: 1,
       title: "Stickiness",
       sub: "Percentage of the Stickiness",
-      number: courseData.percentageStickiness,
-      change: 12.1,
+      number: courseData.percentageStickiness || "...",
     },
     {
       id: 2,
       title: "Attendance",
       sub: "Attendance rate (%)",
-      number: courseData.attendanceRate,
-      change: -3.5,
+      number: courseData.attendanceRate || "...",
     },
     {
       id: 3,
       title: "Time Spent",
       sub: "Average time spent in class",
-      number: courseData.avgTimeSpent,
-      change: 5.0,
+      number: courseData.avgTimeSpent ||"...",
     },
     {
       id: 4,
       title: '30" Attendance',
       sub: "Attendance more than 30 minutes",
-      number: courseData.attendance30,
-      change: 1.8,
+      number: courseData.attendance30 ||"...",
     },
     {
       id: 5,
       title: "Attendance Count",
       sub: "Class total attendance",
-      number: courseData.attendanceCount,
-      change: -2.0,
+      number: courseData.attendanceCount || "...",
     },
     {
       id: 6,
       title: "Correctness",
       sub: "Class performance from tests",
-      number: courseData.correctness,
-      change: -2.0,
+      number: courseData.correctness ||"...",
     },
   ];
 
@@ -167,7 +156,6 @@ function Main() {
 
   const handleSlotChange = (slot) => {
     setSelectedSlot(slot);
-    // console.log("slot: ", selectedSlot);
     setSelectedRows([]);
   };
 
@@ -192,15 +180,12 @@ function Main() {
       </div>
       <div className="main">
         <div className="header">
-          {/* <p>{courses}</p> */}
           <Header
             onCourseChange={handleCourseChange}
             onSlotChange={handleSlotChange}
           />
-          {/* <p>{selectedCourse}</p>
-          <p>{selectedSlot}</p> */}
         </div>
-        {/* Only show the table if both course and slot are selected */}
+
         {selectedCourse && selectedSlot ? (
           <>
             <div className="chips">
@@ -229,8 +214,8 @@ function Main() {
                 <SlackButton
                   selectedRows={selectedRows}
                   onSendData={handleSendData}
-                  selectedCourse={selectedCourse} // Pass selected course
-                  selectedSlot={selectedSlot} // Pass selected slot
+                  selectedCourse={selectedCourse}
+                  selectedSlot={selectedSlot}
                 />
                 <DownloadButton
                   data={tableData}
@@ -238,10 +223,12 @@ function Main() {
                 />
               </div>
             </div>
+
             <div className="button_details">
               <Button label={"Students"} action={showStudentsTable} />
               <Button label={"Sessions"} action={showSessionsTable} />
             </div>
+
             <div className="table_view">
               {activeTable === "students" && (
                 <Table

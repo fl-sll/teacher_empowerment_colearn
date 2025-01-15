@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/StudentPage.css";
-// import slotData from "./data";
-// import SlackButton from "./SlackButton";
 import Chip from "./Chip";
 import SideBar from "./SideBar";
 import { backend_link } from "./CONST";
@@ -19,15 +17,17 @@ function StudentPage({ props }) {
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
   const [tableData, setTableData] = useState();
   const { courseId, slotId, studentId } = useParams();
-  const [studentName, setStudentName] = useState();
+  const [studentData, setStudentData] = useState({});
+
   const fetchData = async () => {
     try {
       console.log(studentId);
-      // get student name
-      const name = await axios.get(`${backend_link}students/${studentId}`);
+      // get student data
+      const student_data = await axios.get(
+        `${backend_link}students/${studentId}`
+      );
+      const student = student_data.data;
 
-      setStudentName(name.data.studentName);
-      console.log(studentName);
       // get list of sesionStudent by studentID
       const sessionStudents = await axios.get(
         `${backend_link}session-students/students/${studentId}`
@@ -40,19 +40,17 @@ function StudentPage({ props }) {
       // get sessionName by session_id
       const sessionDataPromises = sesssionIds.map(async (sessionId) => {
         // !! only enable if there are new data
-        // await axios.put(
-        //   `${backend_link}metrics/calculate/student/${studentId}`
-        // );
+        await axios.put(
+          `${backend_link}metrics/calculate/student/${studentId}`
+        );
         const sessionResponses = await axios.get(
           `${backend_link}sessions/${sessionId}`
         );
         return sessionResponses.data;
       });
 
-      // Resolve all promises to get the detailed student data
       const session_data = await Promise.all(sessionDataPromises);
 
-      // combine data
       const combinedData = sessionStudents.data.map((s) => {
         // Find corresponding sessionData entry
         const sessionDetails = session_data.find(
@@ -71,6 +69,33 @@ function StudentPage({ props }) {
 
       setTableData(combinedData);
       console.log(combinedData);
+      // console.log("student data: ", student);
+      // console.log("metric: ", student.Metric.metricsId);
+
+      const studentMetricsResponse = await axios.get(
+        `${backend_link}metrics/${student.Metric.metricsId}`
+      );
+      const studentMetrics = studentMetricsResponse.data;
+      console.log(studentMetrics);
+
+      const formattedData = {
+        studentId: student.studentId,
+        studentName: student.studentName,
+        percentageStickiness: (studentMetrics.stickiness * 100).toFixed(1),
+        attendanceRate: (
+          (studentMetrics.attendance / studentMetrics.attendanceOver30Mins) *
+          100
+        ).toFixed(1),
+        avgTimeSpent: studentMetrics.avgTimeSpent.toFixed(1),
+        attendance30: (
+          (studentMetrics.attendanceOver30Mins / studentMetrics.attendance) *
+          100
+        ).toFixed(1),
+        attendanceCount: studentMetrics.attendance,
+        correctness: (studentMetrics.correctness * 100).toFixed(0),
+      };
+      console.log(formattedData);
+      setStudentData(formattedData);
     } catch (err) {
       console.log("error: ", err);
       setTableData(["Error"]);
@@ -84,44 +109,41 @@ function StudentPage({ props }) {
   const categories = [
     {
       id: 1,
-      title: "Avg.Attendance",
-      sub: "Slot average attendance",
-      number: 78.1,
-      change: 12.1,
+      title: "Stickiness",
+      sub: "Percentage of the Stickiness",
+      number: studentData.percentageStickiness || "...",
     },
     {
       id: 2,
-      title: "Avg.Score",
-      sub: "Average test score",
-      number: 85.3,
-      change: -3.5,
+      title: "Attendance",
+      sub: "Attendance rate (%)",
+      number: studentData.attendanceRate || "...",
     },
     {
       id: 3,
-      title: "Participation",
-      sub: "Class participation rate",
-      number: 65.0,
-      change: 5.0,
+      title: "Time Spent",
+      sub: "Average time spent in class",
+      number: studentData.avgTimeSpent || "...",
     },
     {
       id: 4,
-      title: "Homework Completion",
-      sub: "Completed assignments",
-      number: 90.4,
-      change: 1.8,
+      title: '30" Attendance',
+      sub: "Attendance more than 30 minutes",
+      number: studentData.attendance30 || "...",
     },
     {
       id: 5,
-      title: "Engagement",
-      sub: "Student engagement level",
-      number: 72.2,
-      change: -2.0,
+      title: "Attendance Count",
+      sub: "Class total attendance",
+      number: studentData.attendanceCount || "...",
+    },
+    {
+      id: 6,
+      title: "Correctness",
+      sub: "Class performance from tests",
+      number: studentData.correctness || "...",
     },
   ];
-
-  // const handleSendData = (selectedRows) => {
-  //   alert(`Sending data: ${JSON.stringify(selectedRows)}`);
-  // };
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -143,8 +165,12 @@ function StudentPage({ props }) {
       <div className="main">
         {/* new header here */}
         {/* <Breadcrumbs name={studentName} /> */}
-        {studentName ? (
-          <Breadcrumbs name={studentName} courseId={courseId} slotId={slotId}/>
+        {studentData.studentName ? (
+          <Breadcrumbs
+            name={studentData.studentName}
+            courseId={courseId}
+            slotId={slotId}
+          />
         ) : (
           <p>Loading data...</p>
         )}
@@ -181,7 +207,7 @@ function StudentPage({ props }) {
               {tableData ? (
                 <DownloadButton
                   data={tableData}
-                  name={`${studentId}-${studentName}`}
+                  name={`${studentId}-${studentData.studentName}`}
                 />
               ) : (
                 <p>Loading data...</p>

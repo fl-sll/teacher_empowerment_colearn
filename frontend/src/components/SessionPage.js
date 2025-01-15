@@ -17,16 +17,19 @@ function SessionPage({ props }) {
   const [selectedCategories, setSelectedCategories] = useState([1, 2, 3]);
   const [tableData, setTableData] = useState();
   const { courseId, slotId, sessionId } = useParams();
-  const [sessionName, setSessionName] = useState();
+  const [sessionData, setSessionData] = useState({});
 
   const fetchData = async () => {
     try {
       console.log(sessionId);
       // get session name
-      const name = await axios.get(`${backend_link}sessions/${sessionId}`);
+      const session_data = await axios.get(
+        `${backend_link}sessions/${sessionId}`
+      );
+      const session = session_data.data;
+      // setSessionName(name.data.sessionName);
+      console.log(session);
 
-      setSessionName(name.data.sessionName);
-      console.log(sessionName);
       // get list of sesionStudent by sessionId
       const sessionStudents = await axios.get(
         `${backend_link}session-students/sessions/${sessionId}`
@@ -39,9 +42,9 @@ function SessionPage({ props }) {
       // get sessionName by session_id
       const studentResponsePromises = studentIds.map(async (s) => {
         // !! only enable if there are new data
-        // await axios.put(
-        //   `${backend_link}metrics/calculate/student/${studentId}`
-        // );
+        await axios.put(
+          `${backend_link}metrics/calculate/student/${s}`
+        );
         const studentResponse = await axios.get(`${backend_link}students/${s}`);
         return studentResponse.data;
       });
@@ -59,7 +62,7 @@ function SessionPage({ props }) {
         // Create combined object
         return {
           id: studentDetails.studentId,
-          sessionName: studentDetails?.studentName || "Unknown", 
+          sessionName: studentDetails?.studentName || "Unknown",
           pretest: s.pretest,
           posttest: s.posttest,
           Metric: s.Metric, // Metrics from sessionStudents
@@ -68,6 +71,31 @@ function SessionPage({ props }) {
 
       setTableData(combinedData);
       console.log(combinedData);
+
+      const sessionMetricsResponse = await axios.get(
+        `${backend_link}metrics/${session.Metric.metricsId}`
+      );
+      const sessionMetrics = sessionMetricsResponse.data;
+      console.log(sessionMetrics);
+
+      const formattedData = {
+        sessionId: session.sessionId,
+        sessionName: session.sessionName,
+        percentageStickiness: (sessionMetrics.stickiness * 100).toFixed(1),
+        attendanceRate: (
+          (sessionMetrics.attendance / sessionMetrics.attendanceOver30Mins) *
+          100
+        ).toFixed(1),
+        avgTimeSpent: sessionMetrics.avgTimeSpent.toFixed(1),
+        attendance30: (
+          (sessionMetrics.attendanceOver30Mins / sessionMetrics.attendance) *
+          100
+        ).toFixed(1),
+        attendanceCount: sessionMetrics.attendance,
+        correctness: (sessionMetrics.correctness * 100).toFixed(0),
+      };
+      console.log(formattedData);
+      setSessionData(formattedData);
     } catch (err) {
       console.log("error: ", err);
       setTableData(["Error"]);
@@ -81,44 +109,41 @@ function SessionPage({ props }) {
   const categories = [
     {
       id: 1,
-      title: "Avg.Attendance",
-      sub: "Slot average attendance",
-      number: 78.1,
-      change: 12.1,
+      title: "Stickiness",
+      sub: "Percentage of the Stickiness",
+      number: sessionData.percentageStickiness || "...",
     },
     {
       id: 2,
-      title: "Avg.Score",
-      sub: "Average test score",
-      number: 85.3,
-      change: -3.5,
+      title: "Attendance",
+      sub: "Attendance rate (%)",
+      number: sessionData.attendanceRate || "...",
     },
     {
       id: 3,
-      title: "Participation",
-      sub: "Class participation rate",
-      number: 65.0,
-      change: 5.0,
+      title: "Time Spent",
+      sub: "Average time spent in class",
+      number: sessionData.avgTimeSpent || "...",
     },
     {
       id: 4,
-      title: "Homework Completion",
-      sub: "Completed assignments",
-      number: 90.4,
-      change: 1.8,
+      title: '30" Attendance',
+      sub: "Attendance more than 30 minutes",
+      number: sessionData.attendance30 || "...",
     },
     {
       id: 5,
-      title: "Engagement",
-      sub: "Student engagement level",
-      number: 72.2,
-      change: -2.0,
+      title: "Attendance Count",
+      sub: "Class total attendance",
+      number: sessionData.attendanceCount || "...",
+    },
+    {
+      id: 6,
+      title: "Correctness",
+      sub: "Class performance from tests",
+      number: sessionData.correctness || "...",
     },
   ];
-
-  // const handleSendData = (selectedRows) => {
-  //   alert(`Sending data: ${JSON.stringify(selectedRows)}`);
-  // };
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -140,8 +165,12 @@ function SessionPage({ props }) {
       <div className="main">
         {/* new header here */}
         {/* <Breadcrumbs name={studentName} /> */}
-        {sessionName ? (
-          <Breadcrumbs name={sessionName} courseId={courseId} slotId={slotId}/>
+        {sessionData.sessionName ? (
+          <Breadcrumbs
+            name={sessionData.sessionName}
+            courseId={courseId}
+            slotId={slotId}
+          />
         ) : (
           <p>Loading data...</p>
         )}
@@ -176,7 +205,10 @@ function SessionPage({ props }) {
                   selectedSlot={selectedSlot} // Pass selected slot
                 /> */}
               {tableData ? (
-                <DownloadButton data={tableData} name={`${sessionId}-${sessionName}`}/>
+                <DownloadButton
+                  data={tableData}
+                  name={`${sessionId}-${sessionData.sessionName}`}
+                />
               ) : (
                 <p>Loading data...</p>
               )}
