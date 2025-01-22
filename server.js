@@ -7,7 +7,14 @@ const app = express();
 const PORT = 8080;
 
 // Enable CORS
-app.use(cors());
+app.use(
+  cors({
+    // ! CHANGE TO FRONTEND LINK
+    origin: process.env.FE_LINK,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(bodyParser.json());
 
 app.post("/api/send-to-slack", async (req, res) => {

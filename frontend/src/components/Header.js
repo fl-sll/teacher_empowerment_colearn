@@ -8,6 +8,7 @@ function Header({ onCourseChange, onSlotChange }) {
   const [selectedSlot, setSelectedSlot] = useState("");
   const [courseOptions, setCourseOptions] = useState([]);
   const [slotOptions, setSlotOptions] = useState([]);
+  const [error, setError] = useState(null); // New state for errors
 
   const fetchCoursesData = async () => {
     try {
@@ -16,11 +17,12 @@ function Header({ onCourseChange, onSlotChange }) {
         courseName: item.courseName,
         courseId: item.courseId,
       }));
-      console.log(data);
       setCourseOptions(data);
+      setError(null); // Reset error if data is fetched successfully
     } catch (err) {
-      console.log("Error fetching courses:", err);
-      setCourseOptions(["Error"]);
+      // console.log("Error fetching courses:", err);
+      setError("Error fetching courses");
+      setCourseOptions([]); // Reset course options if error occurs
     }
   };
 
@@ -33,36 +35,35 @@ function Header({ onCourseChange, onSlotChange }) {
         slotName: item.className,
         slotId: item.classId,
       }));
-      console.log(data);
       setSlotOptions(data);
+      setError(null); // Reset error if data is fetched successfully
     } catch (err) {
-      console.log("Error fetching slots:", err);
-      setSlotOptions(["Error"]);
+      // console.log("Error fetching slots:", err);
+      setError("Error fetching slots");
+      setSlotOptions([]); // Reset slot options if error occurs
     }
   };
 
-  // Fetch courses on mount
   useEffect(() => {
     fetchCoursesData();
-  }, []); // Empty dependency array ensures it runs only once on mount
+  }, []); // Fetch courses on mount
 
-  // Fetch slots when selectedCourse changes
   useEffect(() => {
     if (selectedCourse) {
       fetchSlotData();
     } else {
       setSlotOptions([]); // Clear slot options if no course is selected
     }
-  }, [selectedCourse]); // Dependency on selectedCourse
+  }, [selectedCourse]); // Fetch slots when selectedCourse changes
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
-    onCourseChange(e.target.value); // Call the parent's callback
+    onCourseChange(e.target.value);
   };
 
   const handleSlotChange = (e) => {
     setSelectedSlot(e.target.value);
-    onSlotChange(e.target.value); // Call the parent's callback
+    onSlotChange(e.target.value);
   };
 
   return (
@@ -79,11 +80,15 @@ function Header({ onCourseChange, onSlotChange }) {
             className="dropdown_header"
           >
             <option value="">Select a course</option>
-            {courseOptions.map((course, index) => (
-              <option key={index} value={course.courseId}>
-                {course.courseName}
-              </option>
-            ))}
+            {courseOptions.length > 0 ? (
+              courseOptions.map((course, index) => (
+                <option key={index} value={course.courseId}>
+                  {course.courseName}
+                </option>
+              ))
+            ) : (
+              <option disabled>{error || "No courses available"}</option>
+            )}
           </select>
         </div>
 
@@ -97,11 +102,15 @@ function Header({ onCourseChange, onSlotChange }) {
             disabled={!selectedCourse} // Disable dropdown until a course is selected
           >
             <option value="">Select a slot</option>
-            {slotOptions.map((slot, index) => (
-              <option key={index} value={slot.slotId}>
-                {slot.slotName}
-              </option>
-            ))}
+            {slotOptions.length > 0 ? (
+              slotOptions.map((slot, index) => (
+                <option key={index} value={slot.slotId}>
+                  {slot.slotName}
+                </option>
+              ))
+            ) : (
+              <option disabled>{error || "No slots available"}</option>
+            )}
           </select>
         </div>
       </div>

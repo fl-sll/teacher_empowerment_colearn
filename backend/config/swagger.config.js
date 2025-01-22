@@ -13,8 +13,8 @@ const options = {
     },
     servers: [
       {
-        // url: `https://colearn-production.up.railway.app/api`,
-        url: `http://localhost/api`,
+        url: `https://colearn-production.up.railway.app/api`,
+        // url: `http://localhost/api`,
       },
     ],
     components: {

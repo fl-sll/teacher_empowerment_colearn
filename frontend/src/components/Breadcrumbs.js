@@ -17,12 +17,12 @@ function Breadcrumbs({ type, name, courseId, slotId }) {
       const slot_data = await axios.get(
         `${backend_link}courses/${courseId}/classes/${slotId}`
       );
-      console.log(course_data);
-      console.log(course_data.data.courseName);
+      // console.log(course_data);
+      // console.log(course_data.data.courseName);
       setCourse(course_data.data.courseName);
       setSlot(slot_data.data.className);
     } catch (err) {
-      console.log("error: ", err);
+      // console.log("error: ", err);
       setCourse("Course error");
       setSlot("Slot error");
     }
@@ -51,8 +51,10 @@ function Breadcrumbs({ type, name, courseId, slotId }) {
       <div className="back">
         <div
           className="arrow-container"
-          onClick={() => navigate("/")}
+          onClick={useNavigate("/")} // navigate should be called here
           style={{ cursor: "pointer" }}
+          role="button"
+          aria-label="Back"
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>

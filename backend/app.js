@@ -17,7 +17,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use(
   cors({
     // ! CHANGE TO FRONTEND LINK
-    origin: "*",
+    origin: process.env.FE_LINK,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

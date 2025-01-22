@@ -42,15 +42,12 @@ function SlackButton({ selectedRows, onSendData, selectedCourse, selectedSlot })
   };
 
   return (
-    // <button className="custom_button" onClick={handleSendData} style={{ padding: "10px 20px", fontSize: "16px" }}>
-    //   {logo && <img src={logo} alt="Button Logo" className="logo_slack"/>}
-    //   Send Notification
-    // </button>
         <Button
         label={"Send to Slack"}
         logo={slack}
         border={"customize"}
         action={handleSendData}
+        aria-label="Send to Slack"
       />
   );
 }

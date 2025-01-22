@@ -186,7 +186,7 @@ const classController = require('../controllers/class.controller.js');
      *               attendance:
      *                 type: number
      *               improvement:
-     *                 type: string    
+     *                 type: float    
      *     responses:
      *       200:
      *         description: The updated class
