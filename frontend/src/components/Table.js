@@ -148,22 +148,8 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
     }
   }
 
-  // function getImprovementCategory(improvement) {
-  //   if (improvement < 0) {
-  //     return "decrease";
-  //   } else if (improvement === 0) {
-  //     return "none";
-  //   } else if (improvement <0.3) {
-  //     return "low";
-  //   } else if (improvement < 0.6) {
-  //     return "medium";
-  //   } else {
-  //     return "high";
-  //   }
-  // }
-
   function getPercentage(value) {
-    return value * 100;
+    return `${(value * 100).toFixed(0)}%`;
   }
 
   return (
@@ -261,17 +247,16 @@ const Table = ({ type, course, slot, onSelectedRowsChange, onRowClick, onDataUpd
                 <td>
                   {row.Metric ? getPercentage(row.Metric.stickiness) : "N/A"}
                 </td>
-                <td>{row.Metric ? row.Metric.attendanceRate : "N/A"}</td>
-                <td>{row.Metric ? row.Metric.avgTimeSpent : "N/A"}</td>
-                <td>{row.Metric ? row.Metric.attendanceOver30Mins : "N/A"}</td>
+                <td>{row.Metric ? getPercentage(row.Metric.attendanceRate) : "N/A"}</td>
+                <td>{row.Metric ? row.Metric.avgTimeSpent.toFixed(1) : "N/A"}</td>
+                <td>{row.Metric ? row.Metric.attendanceOver30Mins.toFixed(0) : "N/A"}</td>
                 <td>{row.Metric ? row.Metric.attendance : "N/A"}</td>
                 <td>
                   {row.Metric ? getPercentage(row.Metric.correctness) : "N/A"}
                 </td>
                 <td>
                   {row.Metric ? (
-                    <Label text={getImprovementCategory(row.Metric.improvement).toUpperCase()} />
-                    // row.Metric.improvement
+                    <Label text={getImprovementCategory(row.Metric.improvement).toUpperCase()} />      
                   ) : (
                     "Loading..."
                   )}

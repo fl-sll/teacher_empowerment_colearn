@@ -9,7 +9,7 @@ const DetailedTable = ({ type, data }) => {
 
   // Dynamic headers based on type
   const headers = [
-    "Name",
+    type === "session" ? "Student Name" : "Session Name",
     type === "session" ? "Attendance Rate" : "Date",
     "Time Spent in Class",
     "Stickiness",
@@ -44,22 +44,8 @@ const DetailedTable = ({ type, data }) => {
     }
   }
 
-  // function getImprovementCategory(improvement) {
-  //   if (improvement < 0) {
-  //     return "decrease";
-  //   } else if (improvement === 0) {
-  //     return "none";
-  //   } else if (improvement < 0.3) {
-  //     return "low";
-  //   } else if (improvement < 0.6) {
-  //     return "medium";
-  //   } else {
-  //     return "high";
-  //   }
-  // }
-
   function getPercentage(value) {
-    return value * 100;
+    return `${(value * 100).toFixed(1)}%`;
   }
 
   return (
@@ -74,9 +60,9 @@ const DetailedTable = ({ type, data }) => {
                   backgroundColor: index % 2 === 0 ? "#4983F9" : "#1A48D0",
                 }}
               >
-                {header === "Name" ? (
+                {header === "Session Name" || header === "Student Name" ? (
                   <>
-                    Name
+                    {header}
                     <input
                       type="text"
                       placeholder="Search"
@@ -92,48 +78,59 @@ const DetailedTable = ({ type, data }) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              <td>{row.sessionName}</td>
-              {/* Dynamically render Date or Attendance Rate based on type */}
-              <td>
-                {type === "session"
-                  ? row.Metric
-                    ? `${getPercentage(row.Metric.attendanceRate)}%`
-                    : "N/A"
-                  : row.date}
-              </td>
-              <td>{row.Metric ? row.Metric.avgTimeSpent : "N/A"}</td>
-              <td>
-                {row.Metric ? (
-                  <Label
-                    text={getStickinessCategory(
-                      row.Metric.stickiness
-                    ).toUpperCase()}
-                  />
-                ) : (
-                  "Loading..."
-                )}
-              </td>
-              <td>{row ? row.pretest : "N/A"}</td>
-              <td>{row ? row.posttest : "N/A"}</td>
-              <td>
-                {row.Metric ? getPercentage(row.Metric.correctness) : "N/A"}
-              </td>
-              <td>{row.Metric ? row.Metric.improvement : "N/A"}</td>
-              <td>
-                {row.Metric ? (
-                  <Label
-                    text={getImprovementCategory(
-                      row.Metric.improvement
-                    ).toUpperCase()}
-                  />
-                ) : (
-                  "Loading..."
-                )}
-              </td>
-            </tr>
-          ))}
+          {tableData
+            .filter((row) =>
+              (type === "session" ? row.sessionName : row.sessionName)
+                ?.toLowerCase()
+                .includes(searchTerm.toLowerCase())
+            )
+            .map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                <td>
+                  {type === "session" ? row.sessionName : row.sessionName}
+                </td>
+                <td>
+                  {type === "session"
+                    ? row.Metric
+                      ? getPercentage(row.Metric.attendanceRate)
+                      : "N/A"
+                    : row.date}
+                </td>
+                <td>
+                  {row.Metric ? row.Metric.avgTimeSpent.toFixed(1) : "N/A"}
+                </td>
+                <td>
+                  {row.Metric ? (
+                    <Label
+                      text={getStickinessCategory(
+                        row.Metric.stickiness
+                      ).toUpperCase()}
+                    />
+                  ) : (
+                    "Loading..."
+                  )}
+                </td>
+                <td>{row ? row.pretest : "N/A"}</td>
+                <td>{row ? row.posttest : "N/A"}</td>
+                <td>
+                  {row.Metric ? getPercentage(row.Metric.correctness) : "N/A"}
+                </td>
+                <td>
+                  {row.Metric ? getPercentage(row.Metric.improvement) : "N/A"}
+                </td>
+                <td>
+                  {row.Metric ? (
+                    <Label
+                      text={getImprovementCategory(
+                        row.Metric.improvement
+                      ).toUpperCase()}
+                    />
+                  ) : (
+                    "Loading..."
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

@@ -72,7 +72,7 @@ function Main() {
         ).toFixed(1),
         attendanceCount: classMetrics.attendance,
         correctness: (classMetrics.correctness * 100).toFixed(0),
-        improvement: classMetrics.improvement,
+        improvement: classMetrics.improvement.toFixed(2),
       };
 
       // set data

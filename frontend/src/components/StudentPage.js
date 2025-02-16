@@ -52,18 +52,16 @@ function StudentPage({ props }) {
       const session_data = await Promise.all(sessionDataPromises);
 
       const combinedData = sessionStudents.data.map((s) => {
-        // Find corresponding sessionData entry
         const sessionDetails = session_data.find(
           (session) => session.sessionId === s.sessionId
         );
 
-        // Create combined object
         return {
-          sessionName: sessionDetails?.sessionName || "Unknown", // Fallback to "Unknown" if not found
+          sessionName: sessionDetails?.sessionName || "Unknown",
           date: sessionDetails?.date || "Unknown",
           pretest: s.pretest,
           posttest: s.posttest,
-          Metric: s.Metric, // Metrics from sessionStudents
+          Metric: s.Metric,
         };
       });
 
@@ -78,6 +76,7 @@ function StudentPage({ props }) {
       const studentMetrics = studentMetricsResponse.data;
       console.log(studentMetrics);
 
+      // for the chips
       const formattedData = {
         studentId: student.studentId,
         studentName: student.studentName,
@@ -92,7 +91,8 @@ function StudentPage({ props }) {
           100
         ).toFixed(1),
         attendanceCount: studentMetrics.attendance,
-        correctness: (studentMetrics.correctness * 100).toFixed(0),
+        correctness: (studentMetrics.correctness*100).toFixed(1),
+        improvement: studentMetrics.improvement.toFixed(1),
       };
       console.log(formattedData);
       setStudentData(formattedData);
@@ -110,38 +110,44 @@ function StudentPage({ props }) {
     {
       id: 1,
       title: "Stickiness",
-      sub: "Percentage of the Stickiness",
+      sub: "% of stickiness",
       number: studentData.percentageStickiness || "...",
     },
     {
       id: 2,
       title: "Attendance",
-      sub: "Attendance rate (%)",
+      sub: "% of student attendance",
       number: studentData.attendanceRate || "...",
     },
     {
       id: 3,
       title: "Time Spent",
-      sub: "Average time spent in class",
+      sub: "student average time spent",
       number: studentData.avgTimeSpent || "...",
     },
     {
       id: 4,
       title: '30" Attendance',
-      sub: "Attendance more than 30 minutes",
+      sub: "student average 30mins attendance",
       number: studentData.attendance30 || "...",
     },
     {
       id: 5,
       title: "Attendance Count",
-      sub: "Class total attendance",
+      sub: "student total attendance",
       number: studentData.attendanceCount || "...",
     },
     {
       id: 6,
       title: "Correctness",
-      sub: "Class performance from tests",
+      sub: "student performance from tests",
       number: studentData.correctness || "...",
+    },
+    {
+      id: 7,
+      title: "Improvement",
+      sub: "average student improvement",
+      number: studentData.improvement || "...",
     },
   ];
 
@@ -198,12 +204,6 @@ function StudentPage({ props }) {
                 categories={selectedCategories}
                 onSelectCategories={handleSelectCategories}
               />
-              {/* <SlackButton
-                  selectedRows={selectedRows}
-                  onSendData={handleSendData}
-                  selectedCourse={selectedCourse} // Pass selected course
-                  selectedSlot={selectedSlot} // Pass selected slot
-                /> */}
               {tableData ? (
                 <DownloadButton
                   data={tableData}
@@ -222,9 +222,6 @@ function StudentPage({ props }) {
             )}
           </div>
         </>
-        {/* ) : (
-          <p>Please select a course and a slot to view the data.</p>
-        )} */}
       </div>
     </div>
   );

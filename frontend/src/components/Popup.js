@@ -16,7 +16,7 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
       } else if (prevSelected.length < 3) {
         return [...prevSelected, categoryId];
       } else {
-        return prevSelected; 
+        return prevSelected;
       }
     });
   };
@@ -43,7 +43,7 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
   return (
     <div className="popup-overlay">
       <div className="popup">
-        <h2>Select 3 Categories to Display</h2>
+        <h2>Select 3 Metrics to Display</h2>
         <div className="categories-list">
           {categoryList.map((category) => (
             <div key={category.id} className="category-item">
@@ -68,7 +68,7 @@ const Popup = ({ isOpen, onClose, categories, onSelectCategories }) => {
           <button onClick={onClose}>Close</button>
         </div>
         {selectedCategories.length < 3 && (
-          <p className="error-message">You must select exactly 3 categories.</p>
+          <p className="error-message">You must select exactly 3 metrics.</p>
         )}
       </div>
     </div>

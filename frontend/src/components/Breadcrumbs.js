@@ -51,7 +51,7 @@ function Breadcrumbs({ type, name, courseId, slotId }) {
       <div className="back">
         <div
           className="arrow-container"
-          onClick={useNavigate("/")} // navigate should be called here
+          onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           role="button"
           aria-label="Back"

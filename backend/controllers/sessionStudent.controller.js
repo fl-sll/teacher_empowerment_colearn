@@ -11,42 +11,6 @@ exports.getAllSessionStudents = async (req, res) => {
   });
   res.json(sessionStudents);
 };
-
-// exports.getAllSessionStudents = async (req, res) => {
-//   try {
-//     // Fetch all session students along with their related metrics
-//     const sessionStudents = await SessionStudent.findAll({
-//       include: [
-//         {
-//           model: Metrics,
-//         },
-//       ],
-//     });
-
-//     // Loop through each sessionStudent to update the improvement
-//     for (let sessionStudent of sessionStudents) {
-//       const { pretest, posttest, metricsId } = sessionStudent;
-
-//       if (pretest !== undefined && posttest !== undefined) {
-//         // Calculate improvement
-//         const improvement = (posttest - pretest) / 10;
-
-//         // Find the related Metrics record and update improvement
-//         const metrics = await Metrics.findByPk(metricsId);
-//         if (metrics) {
-//           await metrics.update({ improvement });
-//         }
-//       }
-//     }
-
-//     // Send the updated session students as the response
-//     res.json(sessionStudents);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-
 exports.getSessionStudentById = async (req, res) => {
   const sessionStudent = await SessionStudent.findByPk(req.params.id, {
     include: [
@@ -56,14 +20,6 @@ exports.getSessionStudentById = async (req, res) => {
     ],
   });
   if (sessionStudent) {
-    // const improvement_data = (sessionStudent.posttest - sessionStudent.pretest) / 10;
-
-    // const metrics = await Metrics.findByPk(sessionStudent.metricsId);
-    // if (metrics) {
-    //   await metrics.update({ improvement: improvement_data });
-    // } else {
-    //   return res.status(404).send("Metrics not found");
-    // }
     res.json(sessionStudent);
   } else {
     res.status(404).send("SessionStudent not found");
@@ -121,28 +77,31 @@ exports.createSessionStudent = async (req, res) => {
 
 exports.updateSessionStudent = async (req, res) => {
   try {
-    // Get the session student by ID
     const sessionStudent = await SessionStudent.findByPk(req.params.id);
     if (!sessionStudent) {
       return res.status(404).send("SessionStudent not found");
     }
 
-    // Update the pretest and posttest values from the request body
     const { pretest, posttest } = req.body;
 
     if (pretest !== undefined || posttest !== undefined) {
       await sessionStudent.update(req.body);
 
-      // If pretest or posttest is updated, calculate the improvement
-      if (pretest !== undefined && posttest !== undefined) {
-        const improvement = (posttest - pretest) / 10;
+      const metrics = await Metrics.findByPk(sessionStudent.metricsId);
+      if (metrics) {
+        const updateMetrics = {};
 
-        const metrics = await Metrics.findByPk(sessionStudent.metricsId);
-        if (metrics) {
-          await metrics.update({ improvement });
-        } else {
-          return res.status(404).send("Metrics not found");
+        if (posttest !== undefined) {
+          updateMetrics.correctness = posttest/10;
         }
+
+        if (pretest !== undefined && posttest !== undefined) {
+          updateMetrics.improvement = (posttest - pretest) / 10;
+        }
+
+        await metrics.update(updateMetrics);
+      } else {
+        return res.status(404).send("Metrics not found");
       }
 
       res.json(sessionStudent);

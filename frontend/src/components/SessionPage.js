@@ -42,9 +42,7 @@ function SessionPage({ props }) {
       // get sessionName by session_id
       const studentResponsePromises = studentIds.map(async (s) => {
         // !! only enable if there are new data
-        await axios.put(
-          `${backend_link}metrics/calculate/student/${s}`
-        );
+        await axios.put(`${backend_link}metrics/calculate/student/${s}`);
         const studentResponse = await axios.get(`${backend_link}students/${s}`);
         return studentResponse.data;
       });
@@ -78,6 +76,7 @@ function SessionPage({ props }) {
       const sessionMetrics = sessionMetricsResponse.data;
       console.log(sessionMetrics);
 
+      // for the chips
       const formattedData = {
         sessionId: session.sessionId,
         sessionName: session.sessionName,
@@ -92,7 +91,8 @@ function SessionPage({ props }) {
           100
         ).toFixed(1),
         attendanceCount: sessionMetrics.attendance,
-        correctness: (sessionMetrics.correctness * 100).toFixed(0),
+        correctness: (sessionMetrics.correctness * 100).toFixed(1),
+        improvement: sessionMetrics.improvement.toFixed(1),
       };
       console.log(formattedData);
       setSessionData(formattedData);
@@ -110,38 +110,44 @@ function SessionPage({ props }) {
     {
       id: 1,
       title: "Stickiness",
-      sub: "Percentage of the Stickiness",
+      sub: "% of stickiness",
       number: sessionData.percentageStickiness || "...",
     },
     {
       id: 2,
       title: "Attendance",
-      sub: "Attendance rate (%)",
+      sub: "% of session attendance",
       number: sessionData.attendanceRate || "...",
     },
     {
       id: 3,
       title: "Time Spent",
-      sub: "Average time spent in class",
+      sub: "session average time spent",
       number: sessionData.avgTimeSpent || "...",
     },
     {
       id: 4,
       title: '30" Attendance',
-      sub: "Attendance more than 30 minutes",
+      sub: "session average 30mins attendance",
       number: sessionData.attendance30 || "...",
     },
     {
       id: 5,
       title: "Attendance Count",
-      sub: "Class total attendance",
+      sub: "session total attendance",
       number: sessionData.attendanceCount || "...",
     },
     {
       id: 6,
       title: "Correctness",
-      sub: "Class performance from tests",
+      sub: "session performance from tests",
       number: sessionData.correctness || "...",
+    },
+    {
+      id: 7,
+      title: "Improvement",
+      sub: "average session improvement",
+      number: sessionData.improvement || "...",
     },
   ];
 
