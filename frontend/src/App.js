@@ -1,4 +1,16 @@
-// import React from "react";
+/**
+ * @file App.js
+ * @description Main application file for the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-12
+ * authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file sets up the main application routes using React Router, including routes for the main dashboard, student page, and session page.
+ */
+
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "./components/Main";

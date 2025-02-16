@@ -1,13 +1,16 @@
-# FROM node:18.16.1-alpine3.18
-
-# RUN mkdir -p /app
-# WORKDIR /app
-
-# RUN npm install nodemon -g
-
-# EXPOSE 8080
-# CMD echo 1; npm install; echo 2; npx nodemon app.js
-
+# 
+# @file dockerfile
+# @description Dockerfile for the Teacher Empowerment backend application.
+# @version 1.0.0
+# @date 2025-01-12
+# authors 
+#   - Edward Alvin
+#   - Stephanie Staniswinata
+# 
+# @details
+# This Dockerfile sets up a Docker container for the Teacher Empowerment backend application.
+# It uses a Node.js base image, installs dependencies, copies the application code, and starts the application.
+#
 
 # Use the Node official image
 # https://hub.docker.com/_/node

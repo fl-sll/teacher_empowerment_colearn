@@ -1,3 +1,18 @@
+/**
+ * @file db.config.js
+ * @description Configuration file for setting up the database connection using Sequelize.
+ * @version 1.0.0
+ * @date 2024-12-30
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the configuration settings for connecting to the database.
+ * It uses environment variables to configure the database connection details.
+ * The Sequelize ORM is used to manage the database connection and pooling.
+ */
+
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
 

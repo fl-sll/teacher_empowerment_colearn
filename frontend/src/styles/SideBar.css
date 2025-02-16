@@ -1,3 +1,16 @@
+/* 
+ * @file SideBar.css
+ * @description Stylesheet for the SideBar component in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the CSS styles for the SideBar component, including layout, color schemes, and styling for the sidebar container and logo.
+ */
+
 .sidebar{
     width: 100%;
     background-color: #0155FF;

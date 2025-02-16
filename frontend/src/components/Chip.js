@@ -1,3 +1,18 @@
+/**
+ * @file Button.js
+ * @description Component file for rendering a customizable button in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Button component which can display a label, an optional logo, and handle click actions.
+ * It supports a customizable border style.
+ */
+
+
 import React from "react";
 import "../styles/Chip.css";
 

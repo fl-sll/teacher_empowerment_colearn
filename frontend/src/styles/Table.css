@@ -1,3 +1,16 @@
+/* 
+ * @file Table.css
+ * @description Stylesheet for the Table component in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2024-12-24
+ * authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the CSS styles for the Table component, including layout, color schemes, and styling for table elements.
+ */
+
 .custom_table {
     width: 98%;
     border-collapse: collapse;

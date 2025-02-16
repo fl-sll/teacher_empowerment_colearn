@@ -1,3 +1,17 @@
+/**
+ * @file session.controller.js
+ * @description Controller file for managing session-related operations in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the controller functions for handling CRUD operations and other business logic related to sessions.
+ * It interacts with the Session and Metrics models to perform database operations.
+ */
+
 const Session = require("../models/Session");
 const Metrics = require("../models/Metrics");
 

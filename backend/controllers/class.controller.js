@@ -1,3 +1,18 @@
+/**
+ * @file class.controller.js
+ * @description Controller file for managing class-related operations in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the controller functions for handling CRUD operations and other business logic related to classes.
+ * It interacts with the Class, Course, and Metrics models to perform database operations.
+ */
+
+
 const Class = require("../models/Class");
 const Course = require("../models/Course");
 const Metrics = require("../models/Metrics");

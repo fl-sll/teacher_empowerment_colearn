@@ -1,3 +1,17 @@
+/**
+ * @file slack.routes.js
+ * @description Route file for managing Slack-related API endpoints in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the routes for sending messages to Slack.
+ * It uses Express.js to define the routes and Swagger for API documentation.
+ */
+
 module.exports = (app) => {
     const express = require("express");
 const router = express.Router();

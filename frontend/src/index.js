@@ -1,3 +1,17 @@
+/**
+ * @file index.js
+ * @description Entry point for the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2024-10-24
+ * authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file sets up the React application and renders the App component into the root element.
+ * It also includes performance measurement using reportWebVitals.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

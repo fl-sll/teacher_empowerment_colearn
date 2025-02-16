@@ -1,3 +1,17 @@
+/**
+ * @file DownloadButton.js
+ * @description Component file for rendering a download button in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-22
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the DownloadButton component which allows users to download data in CSV or XLSX format.
+ * It includes functionality to flatten nested objects and convert JSON data to CSV or XLSX files.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import axios from "axios";

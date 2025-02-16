@@ -1,4 +1,17 @@
-// Popup.js
+/**
+ * @file Popup.js
+ * @description Component file for rendering a popup in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Popup component which allows users to select up to 3 metrics to display.
+ * It includes functionality to handle checkbox changes and submit the selected metrics.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../styles/Popup.css";
 

@@ -1,3 +1,17 @@
+/**
+ * @file Table.js
+ * @description Component file for rendering a table in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Table component which displays a table with dynamic headers based on the type prop.
+ * It supports search functionality, row selection, and displays various metrics such as attendance rate, time spent, stickiness, and improvement.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../styles/Table.css";
 import Label from "./Label";

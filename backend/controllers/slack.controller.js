@@ -1,3 +1,17 @@
+/**
+ * @file slack.controller.js
+ * @description Controller file for managing Slack-related operations in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-0
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the controller function for sending messages to a Slack channel using a webhook URL.
+ * It uses the axios library to send HTTP POST requests to the Slack API.
+ */
+
 require("dotenv").config();
 const axios = require("axios"); // Import axios
 

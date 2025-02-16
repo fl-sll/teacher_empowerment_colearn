@@ -1,3 +1,17 @@
+/**
+ * @file Main.js
+ * @description Component file for rendering the main dashboard in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Main component which includes the sidebar, header, chips, buttons, and tables.
+ * It fetches course and slot data from the backend and handles various user interactions.
+ */
+
 import React, { useState, useEffect } from "react";
 import logo from "../logo.svg";
 import "../styles/Main.css";

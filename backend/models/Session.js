@@ -1,3 +1,17 @@
+/**
+ * @file Session.js
+ * @description Model file for defining the Session entity in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Session model and its associations with the Class and Metrics models.
+ * It uses Sequelize ORM to define the schema and relationships.
+ */
+
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 const Class = require('./Class');

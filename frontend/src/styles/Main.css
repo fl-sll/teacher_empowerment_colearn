@@ -1,3 +1,16 @@
+/* 
+ * @file Main.css
+ * @description Stylesheet for the Main component in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2024-12-23
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the CSS styles for the Main component, including layout, color variables, and styling for various sections and elements.
+ */
+
 :root {
     --lightgreen: #50C09A;
     --green: #419176;

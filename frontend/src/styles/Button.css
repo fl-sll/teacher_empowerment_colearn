@@ -1,3 +1,16 @@
+/* 
+ * @file Button.css
+ * @description Stylesheet for the Button component in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-12
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the CSS styles for the Button component, including styles for different button types and states.
+ */
+
 .custom_button {
     color: black;
     border: 2px solid black;

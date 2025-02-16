@@ -1,3 +1,17 @@
+/**
+ * @file Metrics.js
+ * @description Model file for defining the Metrics entity in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-15
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Metrics model and its associations with other models.
+ * It uses Sequelize ORM to define the schema and relationships.
+ */
+
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 

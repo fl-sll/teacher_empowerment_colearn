@@ -1,3 +1,17 @@
+/**
+ * @file Breadcrumbs.js
+ * @description Component file for rendering breadcrumbs in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the Breadcrumbs component which displays the navigation path and engagement title.
+ * It fetches course and slot data from the backend and displays the current date.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Header.css";

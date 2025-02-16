@@ -1,3 +1,17 @@
+/**
+ * @file StudentPage.js
+ * @description Component file for rendering the student page in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the StudentPage component which displays detailed information about a specific student.
+ * It includes metrics, a detailed table of student data, and functionality to customize displayed metrics.
+ */
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/StudentPage.css";

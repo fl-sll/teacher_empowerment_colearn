@@ -1,4 +1,16 @@
-/* Popup.css */
+/* 
+ * @file Popup.css
+ * @description Stylesheet for the Popup component in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the CSS styles for the Popup component, including layout, styling for the overlay, popup content, and buttons.
+ */
+ 
 .popup-overlay {
   position: fixed;
   top: 0;

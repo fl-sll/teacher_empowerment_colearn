@@ -1,3 +1,18 @@
+/**
+ * @file swagger.config.js
+ * @description Configuration file for setting up Swagger documentation for the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-22
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the configuration settings for generating the API documentation using Swagger.
+ * It uses environment variables to configure the server details.
+ * The Swagger JSDoc library is used to generate the OpenAPI specification.
+ */
+
 require("dotenv").config();
 const swaggerJsdoc = require("swagger-jsdoc");
 

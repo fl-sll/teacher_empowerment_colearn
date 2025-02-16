@@ -1,3 +1,17 @@
+/**
+ * @file student.controller.js
+ * @description Controller file for managing student-related operations in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-05
+ * @authors
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ *
+ * @details
+ * This file contains the controller functions for handling CRUD operations and other business logic related to students.
+ * It interacts with the Student and Metrics models to perform database operations.
+ */
+
 const Student = require("../models/Student");
 const Metrics = require("../models/Metrics");
 
@@ -33,38 +47,38 @@ exports.getStudentById = async (req, res) => {
 
 exports.createStudent = async (req, res) => {
   try {
-      const student = await Student.create(req.body);
-      res.status(201).json(student);
+    const student = await Student.create(req.body);
+    res.status(201).json(student);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
-  
+
 exports.updateStudent = async (req, res) => {
   const { studentId } = req.params;
   try {
-      const student = await Student.findByPk(studentId);
-      if (!student) {
-          return res.status(404).json({ message: 'Student not found' });
-      }
-      await student.update(req.body);
-      res.status(200).json(student);
+    const student = await Student.findByPk(studentId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    await student.update(req.body);
+    res.status(200).json(student);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.deleteStudent = async (req, res) => {
   const { studentId } = req.params;
   try {
-      const student = await Student.findByPk(studentId);
-      if (!student) {
-          return res.status(404).json({ message: 'Student not found' });
-      }
-      await student.destroy();
-      res.status(204).send();
+    const student = await Student.findByPk(studentId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    await student.destroy();
+    res.status(204).send();
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -73,33 +87,33 @@ exports.updateMetrics = async (req, res) => {
   const { stickiness, correctness, attendance, improvement } = req.body;
 
   try {
-      const student = await Student.findByPk(studentId, {
-          include: Metrics
+    const student = await Student.findByPk(studentId, {
+      include: Metrics,
+    });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    if (student.Metrics) {
+      student.Metrics.stickiness = stickiness;
+      student.Metrics.correctness = correctness;
+      student.Metrics.attendance = attendance;
+      student.Metrics.improvement = improvement;
+      await student.Metrics.save();
+    } else {
+      const metrics = await Metrics.create({
+        studentId,
+        stickiness,
+        correctness,
+        attendance,
+        improvement,
       });
-      if (!student) {
-          return res.status(404).json({ message: 'Student not found' });
-      }
+      student.metricsId = metrics.metricsId;
+      await student.save();
+    }
 
-      if (student.Metrics) {
-          student.Metrics.stickiness = stickiness;
-          student.Metrics.correctness = correctness;
-          student.Metrics.attendance = attendance;
-          student.Metrics.improvement = improvement;
-          await student.Metrics.save();
-      } else {
-          const metrics = await Metrics.create({
-              studentId,
-              stickiness,
-              correctness,
-              attendance,
-              improvement
-          });
-          student.metricsId = metrics.metricsId;
-          await student.save();
-      }
-
-      res.status(200).json(student);
+    res.status(200).json(student);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

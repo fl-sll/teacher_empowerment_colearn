@@ -1,3 +1,16 @@
+/**
+ * @file data.js
+ * @description Data file for storing sample slot data in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-02
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains sample data for slots, including student information and various metrics such as stickiness, attendance rate, average time spent, and correctness.
+ */
+
 export const slotData = {data:[
         {
           id: 1,

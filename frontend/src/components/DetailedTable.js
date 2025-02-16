@@ -1,3 +1,17 @@
+/**
+ * @file DetailedTable.js
+ * @description Component file for rendering a detailed table in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-02-16
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the DetailedTable component which displays a table with dynamic headers based on the type prop.
+ * It supports search functionality and displays various metrics such as attendance rate, time spent, stickiness, pre-test, post-test, correctness, and improvement.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../styles/Table.css";
 import Label from "./Label";

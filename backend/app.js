@@ -1,3 +1,17 @@
+/**
+ * @file app.js
+ * @description Main application file for the Teacher Empowerment backend application.
+ * @version 1.0.0
+ * @date 2025-01-22
+ * authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file sets up the Express server, connects to the database using Sequelize, and configures middleware including CORS and Swagger for API documentation.
+ * It also includes route definitions for various endpoints.
+ */
+
 require("dotenv").config();
 const express = require("express");
 const app = express();

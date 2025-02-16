@@ -1,3 +1,17 @@
+/**
+ * @file metrics.controller.js
+ * @description Controller file for managing metrics-related operations in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-15
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file contains the controller functions for handling CRUD operations and other business logic related to metrics.
+ * It interacts with the Metrics, SessionStudents, Students, Sessions, and Classes models to perform database operations.
+ */
+
 const Metrics = require("../models/Metrics");
 const SessionStudents = require("../models/SessionStudent");
 const Students = require("../models/Student");

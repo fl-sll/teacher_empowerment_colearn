@@ -1,3 +1,17 @@
+/**
+ * @file SlackButton.js
+ * @description Component file for rendering a button to send data to Slack in the Teacher Empowerment frontend application.
+ * @version 1.0.0
+ * @date 2025-01-22
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the SlackButton component which allows users to send selected data to a Slack channel.
+ * It includes functionality to format the message and send it via a Slack webhook.
+ */
+
 import React from "react";
 import Button from "./Button";
 import slack from "../assets/slack-brands-solid.svg"

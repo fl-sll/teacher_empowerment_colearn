@@ -1,3 +1,17 @@
+/**
+ * @file class.routes.js
+ * @description Route file for managing class-related API endpoints in the Teacher Empowerment API.
+ * @version 1.0.0
+ * @date 2025-01-22
+ * @authors 
+ *   - Edward Alvin
+ *   - Stephanie Staniswinata
+ * 
+ * @details
+ * This file defines the routes for CRUD operations and other endpoints related to classes.
+ * It uses Express.js to define the routes and Swagger for API documentation.
+ */
+
 const express = require('express');
 const router = express.Router();
 const classController = require('../controllers/class.controller.js');
